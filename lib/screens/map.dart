@@ -42,13 +42,11 @@ class _MapState extends State<Map> {
 
   @override
   Widget build(BuildContext context) {
-    return loadedMap
-        ? GoogleMap(
+    return GoogleMap(
             key: UniqueKey(),
             initialCameraPosition:
                 CameraPosition(target: initialPosition, zoom: 15.0),
             myLocationButtonEnabled: true,
-            onMapCreated: onMapCompleted)
-        : Container();
+            onMapCreated: onMapCompleted);
   }
 }
