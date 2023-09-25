@@ -32,27 +32,33 @@ class _LoginState extends State<Login> {
                     decoration: InputDecoration(hintText: "Senha"),
                   ),
                   Padding(padding: EdgeInsets.only(top: 20)),
-                  Container(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                        onPressed: () => {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Home()))
-                            },
-                        child: Text("Login")),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                        onPressed: () => {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Cadastro()))
-                            },
-                        child: Text("Cadastro")),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Home()),
+                            );
+                          },
+                          child: Text("Login"),
+                        ),
+                      ),
+                      SizedBox(width: 10), // Add spacing between the buttons
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Cadastro()),
+                            );
+                          },
+                          child: Text("Cadastro"),
+                        ),
+                      ),
+                    ],
                   )
                 ],
               ),
