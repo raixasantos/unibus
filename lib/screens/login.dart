@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'home.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -33,7 +34,9 @@ class _LoginState extends State<Login> {
                   Container(
                     width: double.infinity,
                     child: ElevatedButton(
-                        onPressed: () => {}, child: Text("Login")),
+                        onPressed: () => {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Home()))
+                        }, child: Text("Login")),
                   )
                 ],
               ),
