@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unibus/screens/cadastro.dart';
 import 'home.dart';
 
 class Login extends StatefulWidget {
@@ -35,8 +36,23 @@ class _LoginState extends State<Login> {
                     width: double.infinity,
                     child: ElevatedButton(
                         onPressed: () => {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Home()))
-                        }, child: Text("Login")),
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Home()))
+                            },
+                        child: Text("Login")),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                        onPressed: () => {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Cadastro()))
+                            },
+                        child: Text("Cadastro")),
                   )
                 ],
               ),
