@@ -18,7 +18,7 @@ class _LoginState extends State<Login> {
         Padding(
           padding: EdgeInsets.all(10),
           child: Container(
-            height: 200,
+            height: 250,
             child: Card(
               margin: EdgeInsets.all(10),
               elevation: 3,
