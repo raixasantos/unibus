@@ -85,7 +85,10 @@ class _CadastroState extends State<Cadastro> {
           onPressed: () {
             print("Oi Estudante");
           },
-          child: Text('Cadastrar Estudante'),
+          child: Text(
+            'Cadastrar Estudante',
+            style: TextStyle(color: Colors.yellow), // Cor do texto do botão
+          ),
         ),
       ],
     );
@@ -106,9 +109,12 @@ class _CadastroState extends State<Cadastro> {
         SizedBox(height: 20.0),
         ElevatedButton(
           onPressed: () {
-            print("Oi motorista");
+            print("Oi Motorista");
           },
-          child: Text('Cadastrar Motorista'),
+          child: Text(
+            'Cadastrar Motorista',
+            style: TextStyle(color: Colors.yellow), // Cor do texto do botão
+          ),
         ),
       ],
     );
