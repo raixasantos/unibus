@@ -1,4 +1,4 @@
-import 'package:unibus/entities/Usuario.dart';
+import 'package:unibus/models/Usuario.dart';
 
 class Aluno extends Usuario{
   String instituicao;
