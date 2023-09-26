@@ -26,7 +26,7 @@ class _LoginState extends State<Login> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   LoginInput("Usuário"),
-                  LoginInput("Senha"),
+                  LoginInput("Senha", isPassword: true),
                   Padding(padding: EdgeInsets.only(top: 20)),
                   Container(
                     width: double.infinity,
