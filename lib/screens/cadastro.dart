@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:unibus/components/login/LoginCardButton.dart';
+import 'package:unibus/components/login/LoginInput.dart';
+import 'package:unibus/screens/login.dart';
 
 class Cadastro extends StatefulWidget {
   const Cadastro({super.key});
@@ -45,34 +48,21 @@ class _CadastroState extends State<Cadastro> {
   Widget _buildEstudanteForm() {
     return Column(
       children: [
-        TextFormField(
-          decoration: InputDecoration(labelText: 'Nome'),
-        ),
+        LoginInput("Nome"),
         Row(
           children: [
             Expanded(
-              child: TextFormField(
-                decoration: InputDecoration(labelText: 'Matrícula'),
-              ),
+              child: LoginInput("Matrícula"),
             ),
             SizedBox(width: 10.0), // Espaço entre os campos
             Expanded(
-              child: TextFormField(
-                decoration: InputDecoration(labelText: 'Faculdade'),
-              ),
+              child: LoginInput("Faculdade"),
             ),
           ],
         ),
-        TextFormField(
-          decoration: InputDecoration(labelText: 'Turno'),
-        ),
+        LoginInput("Turno"),
         SizedBox(height: 20.0),
-        ElevatedButton(
-          onPressed: () {
-            // Implemente a lógica para salvar o cadastro de estudante aqui
-          },
-          child: Text('Cadastrar Estudante'),
-        ),
+        LoginCardButton(Login(), "Cadastrar Estudante")
       ],
     );
   }
@@ -80,19 +70,10 @@ class _CadastroState extends State<Cadastro> {
   Widget _buildMotoristaForm() {
     return Column(
       children: [
-        TextFormField(
-          decoration: InputDecoration(labelText: 'Nome'),
-        ),
-        TextFormField(
-          decoration: InputDecoration(labelText: 'Número da Carteira'),
-        ),
+        LoginInput("Nome"),
+        LoginInput("Número da Carteira"),
         SizedBox(height: 20.0),
-        ElevatedButton(
-          onPressed: () {
-            // Implemente a lógica para salvar o cadastro de motorista aqui
-          },
-          child: Text('Cadastrar Motorista'),
-        ),
+        LoginCardButton(Login(), "Cadastrar Motorista")
       ],
     );
   }
