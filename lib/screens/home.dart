@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unibus/screens/taps/notification_tap.dart';
 import 'map.dart';
 import 'search.dart';
 
@@ -9,7 +10,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final List<Widget> screens = [Map(), Search()];
+  final List<Widget> screens = [const Map(), const Search(), NotificationTap()];
   int screenIndex = 0;
   void onTappedNav(int index) {
     setState(() {
@@ -20,12 +21,13 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Mapa")),
       body: screens[screenIndex],
       bottomNavigationBar: BottomNavigationBar(
-        items: [
+        items: const [
           BottomNavigationBarItem(icon: Icon(Icons.map), label: "Mapa"),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.notifications), label: "Notificações")
         ],
         currentIndex: screenIndex,
         onTap: onTappedNav,
