@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:unibus/components/login/LoginCardButton.dart';
 import 'package:unibus/components/login/LoginInput.dart';
 import 'package:unibus/screens/login.dart';
+import 'package:unibus/widgets/custom_app_bar.dart';
 
 class Cadastro extends StatefulWidget {
   const Cadastro({super.key});
@@ -17,8 +18,8 @@ class _CadastroState extends State<Cadastro> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Cadastro'),
+      appBar: const CustomAppBar(
+        title: "Cadastro",
       ),
       body: ListView(
         padding: const EdgeInsets.all(20.0),

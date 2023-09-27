@@ -1,4 +1,5 @@
 import 'package:unibus/models/advice_notification.dart';
+import 'package:unibus/models/route_bus.dart';
 
 final List<AdviceNotification> advices = [
   AdviceNotification(
@@ -17,4 +18,19 @@ final List<AdviceNotification> advices = [
       date: DateTime(2023, 9, 23),
       description:
           "A partir de 1º de Setembro, a rota Cidade Alta também estará operante no turno vespertino. Verifiquem os horários."),
+];
+
+final List<RouteBus> routes = [
+  RouteBus(
+      name: "UFRN",
+      description: "Destino: Universidade Federal do Rio Grande do Norte",
+      numBus: 4),
+  RouteBus(
+      name: "Cidade Alta",
+      description: "Destino: Instituiçõoes da Cidade Alta",
+      numBus: 2),
+  RouteBus(
+      name: "Zona Sul",
+      description: "Destino: Instituições da Zona Norte",
+      numBus: 3)
 ];

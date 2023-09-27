@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unibus/data/data.dart';
 import 'package:unibus/widgets/custom_advice_notification.dart';
+import 'package:unibus/widgets/custom_app_bar.dart';
 
 class NotificationTap extends StatelessWidget {
   NotificationTap({super.key});
@@ -21,13 +22,12 @@ class NotificationTap extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      appBar: AppBar(
-        title: const Text("Notificações"),
-        automaticallyImplyLeading: false,
+      appBar: const CustomAppBar(
+        title: "Notificações",
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.only(left: 20, right: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

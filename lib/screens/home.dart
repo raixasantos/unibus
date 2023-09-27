@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unibus/screens/taps/notification_tap.dart';
 import 'map.dart';
-import 'search.dart';
+import 'taps/routes_tap.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -10,7 +10,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final List<Widget> screens = [const Map(), const Search(), NotificationTap()];
+  final List<Widget> screens = [const Routes(), const Map(), NotificationTap()];
   int screenIndex = 0;
   void onTappedNav(int index) {
     setState(() {
@@ -24,8 +24,9 @@ class _HomeState extends State<Home> {
       body: screens[screenIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.location_on), label: "Rotas"),
           BottomNavigationBarItem(icon: Icon(Icons.map), label: "Mapa"),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
           BottomNavigationBarItem(
               icon: Icon(Icons.notifications), label: "Notificações")
         ],
