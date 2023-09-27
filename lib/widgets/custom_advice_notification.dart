@@ -1,11 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:unibus/models/advice_notification.dart';
 
-class CustomAdviceNotification extends StatefulWidget {
-  const CustomAdviceNotification({super.key});
+class CustomAdviceNotification extends StatelessWidget {
+  final AdviceNotification adviceNotification;
+
+  const CustomAdviceNotification(this.adviceNotification);
 
   @override
-  // ignore: no_logic_in_create_state
-  State<StatefulWidget> createState() {
-    throw UnimplementedError();
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          const Icon(
+            Icons.bus_alert,
+            size: 30,
+          ),
+          const SizedBox(width: 15),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  adviceNotification.description,
+                  overflow: TextOverflow.visible,
+                  textAlign: TextAlign.justify,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
