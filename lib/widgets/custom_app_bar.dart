@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unibus/constants/colors.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar(
@@ -12,7 +13,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: titleWidget ??
-          Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+          Text(title,
+              style: const TextStyle(fontWeight: FontWeight.bold, color: form)),
       automaticallyImplyLeading: false,
     );
   }

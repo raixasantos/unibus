@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unibus/constants/colors.dart';
 import 'package:unibus/models/advice_notification.dart';
 
 class CustomAdviceNotification extends StatelessWidget {
@@ -13,6 +14,7 @@ class CustomAdviceNotification extends StatelessWidget {
       child: Row(
         children: [
           const Icon(
+            color: secondary,
             Icons.bus_alert,
             size: 30,
           ),

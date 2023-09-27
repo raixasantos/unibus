@@ -27,7 +27,7 @@ final List<RouteBus> routes = [
       numBus: 4),
   RouteBus(
       name: "Cidade Alta",
-      description: "Destino: Instituiçõoes da Cidade Alta",
+      description: "Destino: Instituições da Cidade Alta",
       numBus: 2),
   RouteBus(
       name: "Zona Sul",
