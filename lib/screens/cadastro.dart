@@ -5,13 +5,19 @@ import 'package:unibus/screens/login.dart';
 import 'package:unibus/widgets/custom_app_bar.dart';
 
 class Cadastro extends StatefulWidget {
-  const Cadastro({super.key});
+  Cadastro({super.key});
 
   @override
   State<Cadastro> createState() => _CadastroState();
 }
 
 class _CadastroState extends State<Cadastro> {
+  String name = "";
+  void changeName(String newName) {
+    setState(() {
+      name = newName;
+    });
+  }
   bool isEstudante =
       false; // Variável para rastrear se a opção é "Estudante" ou "Motorista"
 
@@ -24,6 +30,7 @@ class _CadastroState extends State<Cadastro> {
       body: ListView(
         padding: const EdgeInsets.all(20.0),
         children: [
+          Text("Bem vindo(a), ${name}"),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -49,7 +56,7 @@ class _CadastroState extends State<Cadastro> {
   Widget _buildEstudanteForm() {
     return Column(
       children: [
-        LoginInput("Nome"),
+        LoginInput("Nome", onChange: changeName,),
         Row(
           children: [
             Expanded(
@@ -71,7 +78,7 @@ class _CadastroState extends State<Cadastro> {
   Widget _buildMotoristaForm() {
     return Column(
       children: [
-        LoginInput("Nome"),
+        LoginInput("Nome", onChange: changeName),
         LoginInput("Número da Carteira"),
         SizedBox(height: 20.0),
         LoginCardButton(Login(), "Cadastrar Motorista")
