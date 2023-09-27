@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:unibus/components/login/LoginCardButton.dart';
 import 'package:unibus/components/login/LoginInput.dart';
 import 'package:unibus/screens/cadastro.dart';
+import 'package:unibus/widgets/custom_app_bar.dart';
 import 'home.dart';
 
 class Login extends StatefulWidget {
@@ -15,7 +16,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Unibus")),
+      appBar: const CustomAppBar(title: "Unibus"),
       body: Column(children: [
         Padding(
           padding: EdgeInsets.all(10),
