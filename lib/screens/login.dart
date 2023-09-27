@@ -24,15 +24,18 @@ class _LoginState extends State<Login> {
             child: Card(
               margin: EdgeInsets.all(10),
               elevation: 3,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  LoginInput("Usuário"),
-                  LoginInput("Senha", isPassword: true),
-                  Padding(padding: EdgeInsets.only(top: 20)),
-                  LoginCardButton(Home(), "Login"),
-                  LoginCardButton(Cadastro(), "Cadastro")
-                ],
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    LoginInput("Usuário"),
+                    LoginInput("Senha", isPassword: true),
+                    Padding(padding: EdgeInsets.only(top: 20)),
+                    LoginCardButton(Home(), "Login"),
+                    LoginCardButton(Cadastro(), "Cadastro")
+                  ],
+                ),
               ),
             ),
           ),

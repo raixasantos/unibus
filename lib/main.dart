@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unibus/screens/login.dart';
+import 'package:unibus/theme.dart';
 
 void main() => runApp(const MyApp());
 
@@ -15,10 +16,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: lightTheme,
       home: const Login(),
     );
   }

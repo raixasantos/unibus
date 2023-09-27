@@ -20,8 +20,7 @@ class NotificationTap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       appBar: const CustomAppBar(
         title: "Notificações",
       ),
@@ -31,8 +30,10 @@ class NotificationTap extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Hoje"),
-              const SizedBox(height: 15),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 15),
+                child: Text("Hoje"),
+              ),
               ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -63,6 +64,6 @@ class NotificationTap extends StatelessWidget {
           ),
         ),
       ),
-    ));
+    );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unibus/constants/colors.dart';
 import 'package:unibus/models/route_bus.dart';
 
 class RouteCard extends StatelessWidget {
@@ -13,6 +14,7 @@ class RouteCard extends StatelessWidget {
       child: Row(
         children: [
           const Icon(
+            color: secondary,
             Icons.location_on,
             size: 30,
           ),
@@ -29,7 +31,7 @@ class RouteCard extends StatelessWidget {
                 ),
                 Text(
                   route.description,
-                  overflow: TextOverflow.visible,
+                  overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.justify,
                 ),
               ],
