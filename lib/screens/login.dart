@@ -29,11 +29,11 @@ class _LoginState extends State<Login> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    LoginInput("Usuário"),
+                    LoginInput("Usuário", type:"nome"),
                     LoginInput("Senha", isPassword: true),
                     Padding(padding: EdgeInsets.only(top: 20)),
-                    LoginCardButton(Home(), "Login"),
-                    LoginCardButton(Cadastro(), "Cadastro")
+                    LoginCardButton(destiny:Home(), "Login"),
+                    LoginCardButton(destiny:Cadastro(), "Cadastro")
                   ],
                 ),
               ),
