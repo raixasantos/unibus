@@ -4,6 +4,9 @@ import 'package:unibus/components/login/LoginInput.dart';
 import 'package:unibus/screens/login.dart';
 import 'package:unibus/widgets/custom_app_bar.dart';
 
+import '../models/Aluno.dart';
+import '../models/Motorista.dart';
+
 class Cadastro extends StatefulWidget {
   Cadastro({super.key});
 
@@ -12,14 +15,22 @@ class Cadastro extends StatefulWidget {
 }
 
 class _CadastroState extends State<Cadastro> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController matriculaController = TextEditingController();
+  TextEditingController faculdadeController = TextEditingController();
+  TextEditingController turnoController = TextEditingController();
+  TextEditingController numeroCarteiraController = TextEditingController();
+
   String name = "";
+  String senha = ""; // Adicione uma variável para armazenar a senha
+
   void changeName(String newName) {
     setState(() {
       name = newName;
     });
   }
-  bool isEstudante =
-      false; // Variável para rastrear se a opção é "Estudante" ou "Motorista"
+
+  bool isEstudante = false;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +41,7 @@ class _CadastroState extends State<Cadastro> {
       body: ListView(
         padding: const EdgeInsets.all(20.0),
         children: [
-          Text("Bem vindo(a), ${name}"),
+          Text("Bem vindo(a), $name"),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -56,21 +67,43 @@ class _CadastroState extends State<Cadastro> {
   Widget _buildEstudanteForm() {
     return Column(
       children: [
-        LoginInput("Nome", onChange: changeName,),
+        LoginInput("Nome", controller: nameController, onChange: changeName),
+        LoginInput("Senha", isPassword: true, controller: null,
+            onChange: (value) {
+          senha = value;
+        }),
         Row(
           children: [
             Expanded(
-              child: LoginInput("Matrícula"),
+              child: LoginInput("Matrícula", controller: matriculaController),
             ),
-            SizedBox(width: 10.0), // Espaço entre os campos
+            SizedBox(width: 10.0),
             Expanded(
-              child: LoginInput("Faculdade"),
+              child: LoginInput("Faculdade", controller: faculdadeController),
             ),
           ],
         ),
-        LoginInput("Turno"),
+        LoginInput("Turno", controller: turnoController),
         SizedBox(height: 20.0),
-        LoginCardButton(Login(), "Cadastrar Estudante")
+        LoginCardButton(
+          Login(),
+          "Cadastrar Estudante",
+          onPressed: () {
+            // Obter os valores dos controladores
+            String name = nameController.text;
+            String matriculaValue = matriculaController.text;
+            String faculdadeValue = faculdadeController.text;
+            String turnoValue = turnoController.text;
+            String senhaValue = senha; // Obter a senha
+
+            // Criar um objeto Aluno
+            Aluno aluno = Aluno(name, int.parse(matriculaValue), senhaValue,
+                faculdadeValue, turnoValue);
+
+            // Imprimir o objeto Aluno
+            print(aluno);
+          },
+        ),
       ],
     );
   }
@@ -78,10 +111,30 @@ class _CadastroState extends State<Cadastro> {
   Widget _buildMotoristaForm() {
     return Column(
       children: [
-        LoginInput("Nome", onChange: changeName),
-        LoginInput("Número da Carteira"),
+        LoginInput("Nome", controller: nameController, onChange: changeName),
+        LoginInput("Senha", isPassword: true, controller: null,
+            onChange: (value) {
+          senha = value;
+        }),
+        LoginInput("Número da Carteira", controller: numeroCarteiraController),
         SizedBox(height: 20.0),
-        LoginCardButton(Login(), "Cadastrar Motorista")
+        LoginCardButton(
+          Login(),
+          "Cadastrar Motorista",
+          onPressed: () {
+            // Obter os valores dos controladores
+            String name = nameController.text;
+            String numeroCarteiraValue = numeroCarteiraController.text;
+            String senhaValue = senha; // Obter a senha
+
+            // Criar um objeto Motorista
+            Motorista motorista = Motorista(
+                name, int.parse(numeroCarteiraValue), senhaValue, 'sua_agenda');
+
+            // Imprimir o objeto Motorista
+            print(motorista);
+          },
+        ),
       ],
     );
   }
