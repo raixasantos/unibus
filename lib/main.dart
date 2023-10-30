@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unibus/components/LoginProvider.dart';
 import 'package:unibus/screens/login.dart';
 import 'package:unibus/theme.dart';
 import 'package:provider/provider.dart';
@@ -6,12 +7,16 @@ import 'package:provider/provider.dart';
 import 'components/CadastroProvider.dart';
 
 void main() {
-  runApp(
+  runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
       create: (context) => CadastroProvider(),
       child: const MyApp(),
     ),
-  );
+    ChangeNotifierProvider(
+      create: (context) => LoginProvider(),
+      child: const MyApp(),
+    )
+  ]));
 }
 
 class MyApp extends StatefulWidget {
