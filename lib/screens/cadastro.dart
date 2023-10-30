@@ -123,9 +123,8 @@ class _CadastroState extends State<Cadastro> {
 
                     Motorista motorista = Motorista(
                         name,
-                        int.parse(numeroCarteiraValue),
                         senhaValue,
-                        'sua_agenda');
+                        numeroCarteiraValue,);
 
                     print(motorista);
                   }

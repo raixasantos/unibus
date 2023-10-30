@@ -6,5 +6,5 @@ class Aluno extends Usuario {
 
   Aluno(
       String nome, int documento, String password, this.instituicao, this.turno)
-      : super(nome, documento, password);
+      : super(nome, password);
 }
