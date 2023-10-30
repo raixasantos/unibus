@@ -1,12 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:unibus/components/LoginProvider.dart';
+import 'package:unibus/firebase_options.dart';
 import 'package:unibus/screens/login.dart';
 import 'package:unibus/theme.dart';
 import 'package:provider/provider.dart';
 
 import 'components/CadastroProvider.dart';
 
-void main() {
+Future<void> main() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+);
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => CadastroProvider()),
     ChangeNotifierProvider(create: (context) => LoginProvider())
