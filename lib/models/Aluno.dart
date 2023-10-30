@@ -1,7 +1,15 @@
 import 'package:unibus/models/Usuario.dart';
 
-class Aluno extends Usuario{
+class Aluno extends Usuario {
   String instituicao;
   String turno;
-  Aluno(super.nome, super._documento, this.instituicao, this.turno);
+
+  @override
+  String toString() {
+    return 'Motorista(nome: $nome, password: $password, instituição: $instituicao';
+  }
+
+  Aluno(
+      String nome, int documento, String password, this.instituicao, this.turno)
+      : super(nome, password);
 }

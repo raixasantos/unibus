@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "323916982451",
+    "project_id": "unibus-19027",
+    "storage_bucket": "unibus-19027.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323916982451:android:488dab76fbff58d618a8c6",
+        "android_client_info": {
+          "package_name": "com.example.unibus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmvYQ8POIgtqaCX4H1fYHO8L4lwaeV2oQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

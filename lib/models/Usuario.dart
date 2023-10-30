@@ -1,8 +1,11 @@
 import 'dart:io';
 
-abstract class Usuario{
+abstract class Usuario {
   String _nome;
-  File _documento;
+  String _password;
 
-  Usuario(this._nome, this._documento);
+  Usuario(this._nome, this._password);
+
+  String get nome => _nome;
+  String get password => _password;
 }
