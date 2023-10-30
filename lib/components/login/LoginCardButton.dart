@@ -4,7 +4,8 @@ class LoginCardButton extends StatefulWidget {
   final Widget destiny;
   final String content;
   final Function()? onPressed; // Novo argumento para lidar com a ação do botão
-  const LoginCardButton(this.destiny, this.content, {this.onPressed});
+  final bool? disabled;
+  const LoginCardButton(this.destiny, this.content, {this.onPressed, this.disabled});
 
   @override
   State<LoginCardButton> createState() => _LoginCardButtonState();

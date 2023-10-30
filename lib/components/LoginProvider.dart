@@ -4,7 +4,7 @@ class LoginProvider with ChangeNotifier {
   String _name = '';
   String _senha = '';
 
-  bool get isCadastrarEnabled {
+  bool get isLogarEnabled {
     if (!_senha.isEmpty && !_name.isEmpty) {
       return true;
     } else {

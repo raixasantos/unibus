@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:unibus/components/LoginProvider.dart';
+import 'package:unibus/components/LoginProvider.dart';
 import 'package:unibus/components/login/LoginCardButton.dart';
 import 'package:unibus/components/login/LoginInput.dart';
 import 'package:unibus/screens/cadastro.dart';
@@ -38,16 +41,23 @@ class _LoginState extends State<Login> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      LoginInput("Usuário"),
-                      LoginInput("Senha", isPassword: true),
+                      LoginInput("Usuário", onChange: (value) {
+                        final loginProvider = Provider.of<LoginProvider>(context, listen: false);
+                        loginProvider.name = value;
+                      }),
+                      LoginInput("Senha", isPassword: true, onChange: (value) {
+                        final loginProvider = Provider.of<LoginProvider>(context, listen: false);
+                        loginProvider.senha = value;
+                      },),
                       Padding(padding: EdgeInsets.only(top: 20)),
-                      LoginCardButton(
-                        Text(
-                            "Login"), // Use um widget de texto no lugar de uma função
-                        "Login",
-                        onPressed:
-                            _login, // Função a ser executada quando o botão for pressionado
-                      ),
+                      Consumer<LoginProvider>(builder: (context, loginProvider, child) {
+                        return LoginCardButton(
+                          Text(
+                              "Login"), // Use um widget de texto no lugar de uma função
+                          "Login",
+                          onPressed: loginProvider.isLogarEnabled? _login : null, // Função a ser executada quando o botão for pressionado
+                        );
+                      }),
                       LoginCardButton(
                         Text(
                             "Cadastro"), // Use um widget de texto no lugar de uma função

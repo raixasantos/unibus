@@ -8,15 +8,11 @@ import 'components/CadastroProvider.dart';
 
 void main() {
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(
-      create: (context) => CadastroProvider(),
-      child: const MyApp(),
-    ),
-    ChangeNotifierProvider(
-      create: (context) => LoginProvider(),
-      child: const MyApp(),
-    )
-  ]));
+    ChangeNotifierProvider(create: (context) => CadastroProvider()),
+    ChangeNotifierProvider(create: (context) => LoginProvider())
+  ],
+  child: MyApp(),
+  ));
 }
 
 class MyApp extends StatefulWidget {
