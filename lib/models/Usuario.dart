@@ -8,4 +8,8 @@ abstract class Usuario {
 
   String get nome => _nome;
   String get password => _password;
+
+  set nome(String nome){
+    _nome = nome;
+  }
 }

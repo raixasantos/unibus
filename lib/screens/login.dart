@@ -32,7 +32,7 @@ class _LoginState extends State<Login> {
     Usuario user;
     /* VERIFICANDO SE FOI ENCONTRADO UM USUÁRIO */
     if (query.docs.length > 0) {
-      if (query.docs[0]["numeroCarteira"].isEmpty) {
+      if (query.docs[0]["numeroCarteira"].length == 0) {
         user = Aluno(
             query.docs[0]["nome"],
             int.parse(query.docs[0]["matricula"]),

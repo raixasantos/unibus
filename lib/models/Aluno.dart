@@ -4,9 +4,15 @@ class Aluno extends Usuario {
   String instituicao;
   String turno;
 
+  set senha(String senha) {}
+
+  set faculdade(String faculdade) {}
+
+  set matricula(String matricula) {}
+
   @override
   String toString() {
-    return 'Motorista(nome: $nome, password: $password, instituição: $instituicao';
+    return 'Aluno(nome: $nome, password: $password, instituição: $instituicao';
   }
 
   Aluno(
