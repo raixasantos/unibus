@@ -1,16 +1,22 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geolocator/geolocator.dart';
+// import 'package:google_maps_flutter/google_maps_flutter.dart';
+// import 'package:geolocator/geolocator.dart';
 
 class Map extends StatefulWidget {
   const Map({super.key});
 
   @override
-  State<Map> createState() => _MapState();
-}
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    throw UnimplementedError();
+  }
 
+  // @override
+  // State<Map> createState() => _MapState();
+}
+/*
 class _MapState extends State<Map> {
   late Completer<GoogleMapController> mapController = Completer();
   LatLng initialPosition = LatLng(0, 0); // Coordenadas do IMD
@@ -50,3 +56,4 @@ class _MapState extends State<Map> {
             onMapCreated: onMapCompleted);
   }
 }
+*/
