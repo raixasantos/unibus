@@ -8,12 +8,6 @@ class Map extends StatefulWidget {
   const Map({super.key});
 
   @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    throw UnimplementedError();
-  }
-
-  @override
   State<Map> createState() => _MapState();
 }
 
