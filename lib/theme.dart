@@ -39,6 +39,11 @@ ThemeData lightTheme = ThemeData(
   appBarTheme: const AppBarTheme(
     color: primary,
     iconTheme: IconThemeData(color: Colors.white),
-  ),
+    titleTextStyle: TextStyle(color: form)),
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      unselectedIconTheme: IconThemeData(color: mainText),
+      unselectedLabelStyle: TextStyle(color: mainText),
+      selectedIconTheme: IconThemeData(color: secondary),
+      selectedLabelStyle: TextStyle(color: secondary)),
   colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
 );

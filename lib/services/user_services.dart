@@ -1,5 +1,3 @@
-import 'dart:js_interop_unsafe';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:unibus/models/Aluno.dart';
 import 'package:unibus/models/Motorista.dart';
