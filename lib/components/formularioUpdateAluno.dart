@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:unibus/components/UserProvider.dart';
 import 'package:unibus/models/Aluno.dart';
+import 'package:unibus/services/user_services.dart';
 
 class FormularioUpdateAluno extends StatefulWidget {
   const FormularioUpdateAluno({super.key});
@@ -11,11 +13,25 @@ class FormularioUpdateAluno extends StatefulWidget {
 }
 
 class _FormularioUpdateAlunoState extends State<FormularioUpdateAluno> {
-  
+  atualizarDadosUsuario() async {
+    UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    UserServices userServices = UserServices();
+    try {
+      await userServices.updateUser(userProvider.user);
+      Fluttertoast.showToast(
+          msg: "Dados Atualizados", webBgColor: "rgba(75, 215, 75, 1)");
+    } catch (error) {
+      print(error);
+      Fluttertoast.showToast(
+          msg: "Erro ao Atualizar Dados", webBgColor: "rgba(236, 29, 29, 1)");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         // Campo de Nome do Usuário
         Container(
@@ -42,25 +58,6 @@ class _FormularioUpdateAlunoState extends State<FormularioUpdateAluno> {
           margin: EdgeInsets.only(bottom: 20),
           child: Row(
             children: [
-              Flexible(
-                flex: 1,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Matrícula"),
-                    Consumer<UserProvider>(
-                      builder: (context, userProvider, child) {
-                        Aluno aluno = userProvider.user as Aluno;
-                        return TextField(
-                          onChanged: (value) {
-                            aluno.matricula = value;
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
               Flexible(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,7 +92,7 @@ class _FormularioUpdateAlunoState extends State<FormularioUpdateAluno> {
                   Aluno aluno = userProvider.user as Aluno;
                   return TextField(
                     onChanged: (value) {
-                      aluno.faculdade = value;
+                      aluno.instituicao = value;
                     },
                   );
                 },
@@ -114,7 +111,7 @@ class _FormularioUpdateAlunoState extends State<FormularioUpdateAluno> {
                   Aluno aluno = userProvider.user as Aluno;
                   return TextField(
                     onChanged: (value) {
-                      aluno.senha = value;
+                      aluno.password = value;
                     },
                   );
                 },
@@ -122,9 +119,11 @@ class _FormularioUpdateAlunoState extends State<FormularioUpdateAluno> {
             ],
           ),
         ),
-        ElevatedButton(onPressed: (){
-
-        }, child: Text("Atualizar Dados"))
+        ElevatedButton(
+            onPressed: () {
+              atualizarDadosUsuario();
+            },
+            child: Text("Atualizar Dados", style: TextStyle(color: Colors.white),), style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.blue)))
       ],
     );
   }

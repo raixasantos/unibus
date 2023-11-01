@@ -29,31 +29,35 @@ class Perfil extends StatelessWidget {
       body: Container(
         padding: EdgeInsets.all(20),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // Botão para deletar o usuário
+            Consumer<UserProvider>(builder: (context, userProvider, child) {
+              if (userProvider.user is Aluno) {
+                return FormularioUpdateAluno();
+              } else {
+                return FormularioUpdateMotorista();
+              }
+            }),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Consumer<UserProvider>(
                   builder: (context, userProvider, child) {
-                    return TextButton(
+                    return ElevatedButton(
                       onPressed: () {
                         deletarUsuario(userProvider.user);
                       },
-                      child: Text("Deletar Usuário"),
+                      child: Text("Deletar Usuário",
+                          style: TextStyle(color: Colors.white)),
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.red)),
                     );
                   },
                 ),
               ],
             ),
-            Consumer<UserProvider>(builder: (context, userProvider, child) {
-              if(userProvider.user is Aluno){
-                return FormularioUpdateAluno();
-              }
-              else{
-                return FormularioUpdateMotorista();
-              }
-            })
           ],
         ),
       ),

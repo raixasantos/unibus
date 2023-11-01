@@ -3,12 +3,7 @@ import 'package:unibus/models/Usuario.dart';
 class Aluno extends Usuario {
   String instituicao;
   String turno;
-
-  set senha(String senha) {}
-
-  set faculdade(String faculdade) {}
-
-  set matricula(String matricula) {}
+  int matricula;
 
   @override
   String toString() {
@@ -16,6 +11,6 @@ class Aluno extends Usuario {
   }
 
   Aluno(
-      String nome, int documento, String password, this.instituicao, this.turno)
+      String nome, String password, this.instituicao, this.turno, this.matricula)
       : super(nome, password);
 }

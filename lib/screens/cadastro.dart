@@ -50,7 +50,7 @@ class _CadastroState extends State<Cadastro> {
               child: LoginInput("Matrícula", onChange: (value) {
                 final cadastroProvider =
                     Provider.of<CadastroProvider>(context, listen: false);
-                cadastroProvider.matricula = value;
+                cadastroProvider.matricula = int.parse(value);
               }),
             ),
             const SizedBox(width: 10.0),
@@ -77,13 +77,12 @@ class _CadastroState extends State<Cadastro> {
                 ? () {
                     // Se o botão de cadastro estiver habilitado
                     String name = cadastroProvider.name;
-                    String matriculaValue = cadastroProvider.matricula;
+                    int matriculaValue = cadastroProvider.matricula;
                     String faculdadeValue = cadastroProvider.faculdade;
                     String turnoValue = cadastroProvider.turno;
                     String senhaValue = cadastroProvider.senha;
 
-                    Aluno aluno = Aluno(name, int.parse(matriculaValue),
-                        senhaValue, faculdadeValue, turnoValue);
+                    Aluno aluno = Aluno(name, senhaValue, faculdadeValue, turnoValue, matriculaValue );
 
                     print(aluno);
                   }
@@ -106,7 +105,7 @@ class _CadastroState extends State<Cadastro> {
         LoginInput("Numero da Carteira", onChange: (value) {
           final cadastroProvider =
               Provider.of<CadastroProvider>(context, listen: false);
-          cadastroProvider.numeroCarteira = value;
+          cadastroProvider.numeroCarteira = int.parse(value);
         }),
         const SizedBox(height: 20.0),
         Consumer<CadastroProvider>(builder: (context, cadastroProvider, child) {
@@ -117,7 +116,7 @@ class _CadastroState extends State<Cadastro> {
                 ? () {
                     // Se o botão de cadastro estiver habilitado
                     String name = cadastroProvider.name;
-                    String numeroCarteiraValue =
+                    int numeroCarteiraValue =
                         cadastroProvider.numeroCarteira;
                     String senhaValue = cadastroProvider.senha;
 

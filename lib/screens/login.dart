@@ -32,13 +32,15 @@ class _LoginState extends State<Login> {
     Usuario user;
     /* VERIFICANDO SE FOI ENCONTRADO UM USUÁRIO */
     if (query.docs.length > 0) {
-      if (query.docs[0]["numeroCarteira"].length == 0) {
+      if (query.docs[0]["numeroCarteira"] > 0 == false) {
+        print("teste");
         user = Aluno(
             query.docs[0]["nome"],
-            int.parse(query.docs[0]["matricula"]),
             query.docs[0]["password"],
             query.docs[0]["faculdade"],
-            query.docs[0]["turno"]);
+            query.docs[0]["turno"],
+            query.docs[0]["matricula"]
+        );
       } else {
         user = Motorista(query.docs[0]["nome"], query.docs[0]["password"],
             query.docs[0]["numeroCarteira"]);

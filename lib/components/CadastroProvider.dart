@@ -4,20 +4,20 @@ class CadastroProvider with ChangeNotifier {
   String _name = '';
   String _senha = '';
   bool _isMotorista = false; // Alterado para _isMotorista
-  String _matricula = '';
+  int _matricula = 0;
   String _faculdade = '';
   String _turno = '';
-  String _numeroCarteira = '';
+  int _numeroCarteira = 0;
 
   bool get isCadastrarEnabled {
     if (_isMotorista) {
       return _name.isNotEmpty &&
           _senha.isNotEmpty &&
-          _numeroCarteira.isNotEmpty;
+          _numeroCarteira > 0;
     } else {
       return _name.isNotEmpty &&
           _senha.isNotEmpty &&
-          _matricula.isNotEmpty &&
+          _matricula > 0 &&
           _faculdade.isNotEmpty &&
           _turno.isNotEmpty;
     }
@@ -48,9 +48,9 @@ class CadastroProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  String get matricula => _matricula;
+  int get matricula => _matricula;
 
-  set matricula(String value) {
+  set matricula(int value) {
     _matricula = value;
     print("Tem matricula");
     notifyListeners();
@@ -72,9 +72,9 @@ class CadastroProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  String get numeroCarteira => _numeroCarteira;
+  int get numeroCarteira => _numeroCarteira;
 
-  set numeroCarteira(String value) {
+  set numeroCarteira(int value) {
     _numeroCarteira = value;
     print("Tem carteira");
     notifyListeners();
