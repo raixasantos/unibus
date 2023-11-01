@@ -31,7 +31,7 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
               icon: Icon(Icons.notifications), label: "Notificações"),
               BottomNavigationBarItem(
-              icon: Icon(Icons.notifications), label: "Perfil")
+              icon: Icon(Icons.person), label: "Perfil")
         ],
         currentIndex: screenIndex,
         onTap: onTappedNav,
