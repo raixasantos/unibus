@@ -30,27 +30,10 @@ class _RoutesState extends State<Routes> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.only(left: 20, right: 20),
+          padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ElevatedButton(
-                onPressed: () async {
-                  // Aguarde até que o usuário conclua a criação da rota
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CreateRoute()),
-                  );
-
-                  // Limpe a lista antes de atualizá-la
-                  Provider.of<RouteProvider>(context, listen: false)
-                      .clearList();
-
-                  // Após a conclusão da criação da rota, atualize a lista
-                  Provider.of<RouteProvider>(context, listen: false).initList();
-                },
-                child: Text("Criar Rota"),
-              ),
               Consumer<RouteProvider>(builder: (context, routes, child) {
                 return routes.list.isEmpty
                     ? const ListTile(
@@ -69,6 +52,22 @@ class _RoutesState extends State<Routes> {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          // Aguarde até que o usuário conclua a criação da rota
+          await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateRoute()),
+          );
+
+          // Limpe a lista antes de atualizá-la
+          Provider.of<RouteProvider>(context, listen: false).clearList();
+
+          // Após a conclusão da criação da rota, atualize a lista
+          Provider.of<RouteProvider>(context, listen: false).initList();
+        },
+        child: Icon(Icons.add),
       ),
     );
   }

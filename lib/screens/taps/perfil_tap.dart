@@ -48,7 +48,7 @@ class Perfil extends StatelessWidget {
                       onPressed: () {
                         deletarUsuario(userProvider.user);
                       },
-                      child: Text("Deletar Usuário",
+                      child: Text("Excluir conta",
                           style: TextStyle(color: Colors.white)),
                       style: ButtonStyle(
                           backgroundColor:

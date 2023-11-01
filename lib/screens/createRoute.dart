@@ -85,6 +85,8 @@ class _CreateRouteState extends State<CreateRoute> {
 
                 // Limpar os controladores após adicionar a rota
                 createRouteProvider.clearControllers();
+
+                Navigator.pop(context);
               },
               child: Text("Adicionar Rota"),
             ),

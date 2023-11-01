@@ -28,23 +28,6 @@ class RouteCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Row(
-                    mainAxisAlignment:
-                        MainAxisAlignment.end, // Alinhar o botão à direita
-                    children: [
-                      IconButton(
-                        icon: Icon(
-                          Icons.delete,
-                          color: Colors.red,
-                        ), // Ícone de exclusão
-                        onPressed: () {
-                          // Remova a rota quando o botão de exclusão for pressionado
-                          Provider.of<RouteProvider>(context, listen: false)
-                              .removeRoute(route);
-                        },
-                      ),
-                    ],
-                  ),
                   Text(
                     route.name,
                     overflow: TextOverflow.visible,
@@ -61,8 +44,6 @@ class RouteCard extends StatelessWidget {
           ],
         ),
         onTap: () {
-          // Navigator.of(context).pushNamed("/route-detail", arguments: route);
-          print("cliquei");
           Navigator.push(
             context,
             MaterialPageRoute(

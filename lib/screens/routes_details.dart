@@ -38,13 +38,14 @@ class _RouteDetailsPageState extends State<RouteDetailsPage> {
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Nome da Rota:",
                       style: TextStyle(
                         fontSize: 18,
@@ -58,7 +59,7 @@ class _RouteDetailsPageState extends State<RouteDetailsPage> {
                         : Text(
                             nameController
                                 .text, // Alterado para usar o controller
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16,
                             ),
                           ),
@@ -70,7 +71,7 @@ class _RouteDetailsPageState extends State<RouteDetailsPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Descrição da Rota:",
                       style: TextStyle(
                         fontSize: 18,
@@ -83,7 +84,7 @@ class _RouteDetailsPageState extends State<RouteDetailsPage> {
                         : Text(
                             descriptionController
                                 .text, // Alterado para usar o controller
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16,
                             ),
                           ),
@@ -115,13 +116,41 @@ class _RouteDetailsPageState extends State<RouteDetailsPage> {
                   child: Text("Salvar Alterações"),
                 ),
               if (!isEditing)
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      isEditing = true;
-                    });
-                  },
-                  child: Text("Editar"),
+                Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment.center, // Alinhar o botão à direita
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              isEditing = true;
+                            });
+                          },
+                          child: const Text(
+                            "Editar",
+                            style: TextStyle(color: form),
+                          ),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Colors.blue))),
+                    ),
+                    ElevatedButton(
+                        child: const Text(
+                          "Excluir",
+                          style: TextStyle(color: form),
+                        ), // Ícone de exclusão
+                        onPressed: () {
+                          // Remova a rota quando o botão de exclusão for pressionado
+                          Provider.of<RouteProvider>(context, listen: false)
+                              .removeRoute(widget.route);
+                          Navigator.pop(context);
+                        },
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.red))),
+                  ],
                 ),
             ],
           ),
