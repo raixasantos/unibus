@@ -31,6 +31,7 @@ class _LoginState extends State<Login> {
         await loginServices.getUser(loginProvider.name, loginProvider.senha);
     Usuario user;
     /* VERIFICANDO SE FOI ENCONTRADO UM USUÁRIO */
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
     if (query.docs.length > 0) {
       if (query.docs[0]["numeroCarteira"] > 0 == false) {
         print("teste");
@@ -39,8 +40,7 @@ class _LoginState extends State<Login> {
             query.docs[0]["password"],
             query.docs[0]["faculdade"],
             query.docs[0]["turno"],
-            query.docs[0]["matricula"]
-        );
+            query.docs[0]["matricula"]);
       } else {
         user = Motorista(query.docs[0]["nome"], query.docs[0]["password"],
             query.docs[0]["numeroCarteira"]);

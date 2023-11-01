@@ -9,9 +9,21 @@ class RouteProvider with ChangeNotifier {
   final List<RouteBus> _list = [];
   final List<RouteBus> _favorites = [];
   RouteServices routeServices = RouteServices();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
 
   RouteProvider() {
     initList();
+  }
+
+  // Obtenha o valor inicial da rota
+  RouteBus initialValue(String routeName) {
+    return _list.firstWhere((route) => route.name == routeName);
+  }
+
+  void clearControllers() {
+    nameController.clear();
+    descriptionController.clear();
   }
 
   initList() async {
@@ -54,7 +66,9 @@ class RouteProvider with ChangeNotifier {
 
   // remover rotas
   removeRoute(RouteBus route) async {
+    print("Estou no provider para excluir: ${route.name}");
     await routeServices.removeRoute(route);
+    print("Estou no provider depois que chamei service");
     if (_list.contains(route)) _list.remove(route);
     notifyListeners();
   }
@@ -63,5 +77,10 @@ class RouteProvider with ChangeNotifier {
   favoriteRoute(RouteBus route) async {
     _favorites.add(route);
     notifyListeners();
+  }
+
+  //Limpar a lista
+  void clearList() {
+    _list.clear();
   }
 }

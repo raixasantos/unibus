@@ -36,39 +36,24 @@ class RouteServices {
   }
 
   Future<void> removeRoute(RouteBus route) async {
-    try {
-      final routeDocument = await routesCollection.doc(route.name).get();
-
-      if (routeDocument.exists) {
-        await routesCollection.doc(route.name).delete();
-      } else {
-        throw Exception(ErrorNotExists('A rota'));
-      }
-    } catch (e) {
-      throw Exception(ErrorRemove("rota", e));
-    }
+    print("Estou no service para excluir: ${route.name}");
+    QuerySnapshot queryResult = await FirebaseFirestore.instance
+        .collection('routes')
+        .where('name', isEqualTo: route.name)
+        .get();
+    queryResult.docs[0].reference.delete();
   }
 
   Future<void> updateRoute(RouteBus route) async {
-    try {
-      final existingRoute =
-          await routesCollection.where('name', isEqualTo: route.name).get();
-
-      if (existingRoute.docs.isNotEmpty) {
-        final docId = existingRoute.docs[0].id;
-
-        await routesCollection.doc(docId).update(
-          {
-            'code_bus': route.codeBus,
-            'description': route.description,
-            'name': route.name,
-          },
-        );
-      } else {
-        throw Exception(ErrorNotFound("A rota"));
-      }
-    } catch (e) {
-      throw Exception(ErrorUpdate("rota", e));
-    }
+    QuerySnapshot queryResult = await FirebaseFirestore.instance
+        .collection('routes')
+        .where('code_bus', isEqualTo: route.codeBus)
+        .get();
+    print(queryResult);
+    queryResult.docs[0].reference.update({
+      "code_bus": route.codeBus,
+      "name": route.name,
+      "description": route.description,
+    });
   }
 }
