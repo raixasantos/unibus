@@ -1,14 +1,34 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geolocator/geolocator.dart';
+// import 'package:google_maps_flutter/google_maps_flutter.dart';
+// import 'package:geolocator/geolocator.dart';
 
-class Map extends StatefulWidget {
+class Map extends StatelessWidget {
   const Map({super.key});
 
   @override
-  State<Map> createState() => _MapState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Mapa"),
+        automaticallyImplyLeading: false,
+      ),
+      body: Center(
+        child: Image.network(
+          'https://i.imgur.com/MTp2381.png',
+        ),
+      ),
+    );
+  }
+}
+
+/*
+class Map extends StatefulWidget {
+  const Map({super.key});
+
+  // @override
+  // State<Map> createState() => _MapState();
 }
 
 class _MapState extends State<Map> {
@@ -50,3 +70,4 @@ class _MapState extends State<Map> {
             onMapCreated: onMapCompleted);
   }
 }
+*/

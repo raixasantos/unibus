@@ -11,7 +11,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final List<Widget> screens = [const Routes(), const Map(), NotificationTap(), Perfil()];
+  final List<Widget> screens = [
+    const Routes(),
+    Map(),
+    NotificationTap(),
+    Perfil()
+  ];
   int screenIndex = 0;
   void onTappedNav(int index) {
     setState(() {
@@ -30,8 +35,7 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(icon: Icon(Icons.map), label: "Mapa"),
           BottomNavigationBarItem(
               icon: Icon(Icons.notifications), label: "Notificações"),
-              BottomNavigationBarItem(
-              icon: Icon(Icons.person), label: "Perfil")
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Perfil")
         ],
         currentIndex: screenIndex,
         onTap: onTappedNav,
