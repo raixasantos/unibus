@@ -1,4 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:unibus/components/RouteProvider.dart';
 import 'package:unibus/data/data.dart';
 import 'package:unibus/models/route_bus.dart';
 import 'package:unibus/widgets/custom_app_bar.dart';
@@ -14,7 +18,7 @@ class Routes extends StatefulWidget {
 
 class _RoutesState extends State<Routes> {
   TextEditingController searchController = TextEditingController();
-  List<RouteBus> routesBus = routes;
+  List<RouteBus> routesBus = routes; // Consumer
 
   @override
   Widget build(BuildContext context) {
@@ -27,20 +31,28 @@ class _RoutesState extends State<Routes> {
           padding: const EdgeInsets.only(left: 20, right: 20),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            CustomTextFormField(
+            /* CustomTextFormField(
               hint: "Buscar rotas",
               prefixIcon: Icons.search,
               controller: searchController,
               filled: true,
-            ),
-            ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: routesBus.length,
-                itemBuilder: (context, index) {
-                  final route = routesBus[index];
-                  return RouteCard(route);
-                }),
+            ), */
+            // colocar favoritados
+            Consumer<RouteProvider>(builder: (context, routes, child) {
+              return routes.list.isEmpty
+                  ? const ListTile(
+                      leading: Icon(Icons.route),
+                      title: Text('Ainda não há rotas'),
+                    )
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: routes.list.length,
+                      itemBuilder: (context, index) {
+                        final route = routes.list[index];
+                        return RouteCard(route);
+                      });
+            })
           ]),
         ),
       ),
