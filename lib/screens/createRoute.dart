@@ -48,7 +48,7 @@ class _CreateRouteState extends State<CreateRoute> {
                 // Verifique se o nome ou a descrição estão vazios
                 if (name.isEmpty || description.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                    const SnackBar(
                       content:
                           Text("Nome e descrição da rota são obrigatórios."),
                       backgroundColor: Colors.red,
