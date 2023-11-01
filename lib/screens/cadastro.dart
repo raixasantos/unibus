@@ -1,7 +1,12 @@
+import 'package:firebase/firebase.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:unibus/components/UserProvider.dart';
 import 'package:unibus/components/login/LoginCardButton.dart';
 import 'package:unibus/components/login/LoginInput.dart';
+import 'package:unibus/models/Usuario.dart';
 import 'package:unibus/screens/login.dart';
+import 'package:unibus/services/user_services.dart';
 import 'package:unibus/widgets/custom_app_bar.dart';
 import 'package:provider/provider.dart';
 import '../components/CadastroProvider.dart';
@@ -17,6 +22,35 @@ class Cadastro extends StatefulWidget {
 
 class _CadastroState extends State<Cadastro> {
   String name = "";
+  cadastraUsuario() async {
+    CadastroProvider cadastroProvider =
+        Provider.of<CadastroProvider>(context, listen: false);
+    UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    UserServices userServices = UserServices();
+    Usuario novoUsuario;
+    if (cadastroProvider.numeroCarteira > 0) {
+      novoUsuario = Motorista(cadastroProvider.name, cadastroProvider.senha,
+          cadastroProvider.numeroCarteira);
+    } else {
+      novoUsuario = Aluno(
+          cadastroProvider.name,
+          cadastroProvider.senha,
+          cadastroProvider.faculdade,
+          cadastroProvider.turno,
+          cadastroProvider.matricula);
+    }
+    try {
+      await userServices.CreateUser(novoUsuario);
+      userProvider.user = novoUsuario;
+      Fluttertoast.showToast(
+          msg: "Usuário ${userProvider.user.nome} Criado!",
+          webBgColor: "rgba(75, 215, 75, 1)");
+    } catch (error) {
+      Fluttertoast.showToast(
+          msg: "Erro ao criar usuário", webBgColor: "rgba(236, 29, 29, 1)");
+    }
+  }
 
   @override
   void initState() {
@@ -76,15 +110,9 @@ class _CadastroState extends State<Cadastro> {
             onPressed: cadastroProvider.isCadastrarEnabled
                 ? () {
                     // Se o botão de cadastro estiver habilitado
-                    String name = cadastroProvider.name;
-                    int matriculaValue = cadastroProvider.matricula;
-                    String faculdadeValue = cadastroProvider.faculdade;
-                    String turnoValue = cadastroProvider.turno;
-                    String senhaValue = cadastroProvider.senha;
-
-                    Aluno aluno = Aluno(name, senhaValue, faculdadeValue, turnoValue, matriculaValue );
-
-                    print(aluno);
+                    cadastraUsuario();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Login()));
                   }
                 : null, // Desabilitar o botão se não estiver pronto para cadastro
           );
@@ -115,17 +143,9 @@ class _CadastroState extends State<Cadastro> {
             onPressed: cadastroProvider.isCadastrarEnabled
                 ? () {
                     // Se o botão de cadastro estiver habilitado
-                    String name = cadastroProvider.name;
-                    int numeroCarteiraValue =
-                        cadastroProvider.numeroCarteira;
-                    String senhaValue = cadastroProvider.senha;
-
-                    Motorista motorista = Motorista(
-                        name,
-                        senhaValue,
-                        numeroCarteiraValue,);
-
-                    print(motorista);
+                    cadastraUsuario();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Login()));
                   }
                 : null, // Desabilitar o botão se não estiver pronto para cadastro
           );

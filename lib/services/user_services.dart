@@ -39,4 +39,29 @@ class UserServices {
       });
     }
   }
+
+  /* cria usuários no banco */
+  Future CreateUser(Usuario user) async {
+    Map<String, dynamic> userMapping = {};
+    if (user is Aluno) {
+      userMapping = {
+        "nome": user.nome,
+        "matricula": user.matricula,
+        "faculdade": user.instituicao,
+        "password": user.password,
+        "turno": user.turno,
+        "numeroCarteira": 0
+      };
+    } else if (user is Motorista) {
+      userMapping = {
+        "nome": user.nome,
+        "password": user.password,
+        "numeroCarteira": user.numeroCarteira
+      };
+    }
+    final users = await FirebaseFirestore.instance
+        .collection('users')
+        .doc();
+    users.set(userMapping);
+  }
 }

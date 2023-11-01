@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unibus/constants/colors.dart';
 import 'package:unibus/models/route_bus.dart';
+import 'package:unibus/screens/routes_details.dart';
 
 class RouteCard extends StatelessWidget {
   final RouteBus route;
