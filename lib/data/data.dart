@@ -24,13 +24,13 @@ final List<RouteBus> routes = [
   RouteBus(
       name: "UFRN",
       description: "Destino: Universidade Federal do Rio Grande do Norte",
-      numBus: 4),
+      codeBus: 4),
   RouteBus(
       name: "Cidade Alta",
       description: "Destino: Instituições da Cidade Alta",
-      numBus: 2),
+      codeBus: 2),
   RouteBus(
       name: "Zona Sul",
       description: "Destino: Instituições da Zona Norte",
-      numBus: 3)
+      codeBus: 3)
 ];
