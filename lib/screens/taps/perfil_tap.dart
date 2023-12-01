@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:unibus/components/UserProvider.dart';
 import 'package:unibus/components/formularioUpdateAluno.dart';
 import 'package:unibus/components/formularioUpdateMotorista.dart';
@@ -10,16 +11,30 @@ import 'package:unibus/services/user_services.dart';
 import 'package:unibus/widgets/custom_app_bar.dart';
 
 class Perfil extends StatelessWidget {
-  const Perfil({super.key});
+  const Perfil({Key? key});
 
   @override
   Widget build(BuildContext context) {
-    // Função para deletar o usuário
-    deletarUsuario(Usuario user) async {
-      UserServices userServices = UserServices();
-      userServices.deleteUser(user.nome);
-      await Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Login()));
+    final LocalAuthentication _localAuthentication = LocalAuthentication();
+
+    // Função para deletar o usuário após autenticação biométrica
+    Future<void> deletarUsuarioAposAutenticacao(Usuario user) async {
+      bool autenticado = false;
+
+      try {
+        autenticado = await _localAuthentication.authenticate(
+          localizedReason: 'Toque no sensor para autenticar',
+        );
+      } catch (e) {
+        print('Erro durante a autenticação biométrica: $e');
+      }
+
+      if (autenticado) {
+        UserServices userServices = UserServices();
+        userServices.deleteUser(user.nome);
+        await Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Login()));
+      }
     }
 
     return Scaffold(
@@ -46,7 +61,7 @@ class Perfil extends StatelessWidget {
                   builder: (context, userProvider, child) {
                     return ElevatedButton(
                       onPressed: () {
-                        deletarUsuario(userProvider.user);
+                        deletarUsuarioAposAutenticacao(userProvider.user);
                       },
                       child: Text("Excluir conta",
                           style: TextStyle(color: Colors.white)),

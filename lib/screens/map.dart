@@ -1,40 +1,21 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
-// import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 
-class Map extends StatelessWidget {
-  const Map({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Mapa"),
-        automaticallyImplyLeading: false,
-      ),
-      body: Center(
-        child: Image.network(
-          'https://i.imgur.com/MTp2381.png',
-        ),
-      ),
-    );
-  }
-}
-
-/*
 class Map extends StatefulWidget {
   const Map({super.key});
 
-  // @override
-  // State<Map> createState() => _MapState();
+  State<Map> createState() => _MapState();
 }
 
 class _MapState extends State<Map> {
   late Completer<GoogleMapController> mapController = Completer();
-  LatLng initialPosition = LatLng(0, 0); // Coordenadas do IMD
+  LatLng initialPosition = LatLng(0, 0); // Default coordinates
   bool loadedMap = false;
+  Set<Marker> _markers = {};
+
   Future<void> trackLocation() async {
     LocationPermission locationPermission =
         await Geolocator.requestPermission();
@@ -45,8 +26,18 @@ class _MapState extends State<Map> {
 
     setState(() {
       initialPosition = LatLng(latitude, longitude);
+      _markers.add(
+        Marker(
+          markerId: MarkerId("userLocation"),
+          position: initialPosition,
+        ),
+      );
     });
-    print(initialPosition);
+
+    if (loadedMap) {
+      final GoogleMapController controller = await mapController.future;
+      controller.animateCamera(CameraUpdate.newLatLng(initialPosition));
+    }
   }
 
   @override
@@ -56,18 +47,18 @@ class _MapState extends State<Map> {
   }
 
   void onMapCompleted(GoogleMapController controller) {
-    mapController.complete();
+    mapController.complete(controller);
     loadedMap = true;
   }
 
   @override
   Widget build(BuildContext context) {
     return GoogleMap(
-            key: UniqueKey(),
-            initialCameraPosition:
-                CameraPosition(target: initialPosition, zoom: 15.0),
-            myLocationButtonEnabled: true,
-            onMapCreated: onMapCompleted);
+      key: UniqueKey(),
+      initialCameraPosition: CameraPosition(target: initialPosition, zoom: 15.0),
+      myLocationButtonEnabled: true,
+      markers: _markers,
+      onMapCreated: onMapCompleted,
+    );
   }
 }
-*/
