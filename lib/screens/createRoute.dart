@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart'; // Importe o cloud_firest
 import 'package:unibus/components/RouteProvider.dart';
 import 'package:unibus/models/route_bus.dart';
 import 'package:unibus/services/routes_services.dart';
+import 'package:unibus/components/login/LoginCardButton.dart';
+import 'package:unibus/screens/createStop.dart';
 
 class CreateRoute extends StatefulWidget {
   const CreateRoute({Key? key}) : super(key: key);
@@ -38,6 +40,13 @@ class _CreateRouteState extends State<CreateRoute> {
               decoration: InputDecoration(labelText: "Descrição da Rota"),
             ),
             const SizedBox(height: 20.0),
+            LoginCardButton(
+                Text(
+                    "Adicionar Parada"), // Use um widget de texto no lugar de uma função
+                "Adicionar Parada", onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CreateStop()));
+            }),
             ElevatedButton(
               onPressed: () async {
                 // Ao pressionar o botão de adicionar

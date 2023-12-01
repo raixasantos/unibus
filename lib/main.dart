@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:unibus/components/LoginProvider.dart';
+import 'package:unibus/components/ParadaProvider.dart';
 import 'package:unibus/components/RouteProvider.dart';
 import 'package:unibus/components/UserProvider.dart';
 import 'package:unibus/firebase_options.dart';
@@ -9,6 +10,7 @@ import 'package:unibus/theme.dart';
 import 'package:provider/provider.dart';
 
 import 'components/CadastroProvider.dart';
+import 'components/ParadaProvider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +23,7 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (context) => CadastroProvider()),
       ChangeNotifierProvider(create: (context) => LoginProvider()),
       ChangeNotifierProvider(create: (context) => UserProvider()),
+      ChangeNotifierProvider(create: (context) => ParadaProvider()),
       ChangeNotifierProvider(create: (context) => RouteProvider())
     ],
     child: MyApp(),

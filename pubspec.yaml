@@ -42,6 +42,9 @@ dependencies:
   cloud_firestore: ^4.12.1
   fluttertoast: ^8.2.2
   uuid: ^4.1.0
+  google_maps_flutter: ^2.5.0
+  geocoding: ^2.1.1
+  http: ^0.13.6
 
 dev_dependencies:
   flutter_test:
