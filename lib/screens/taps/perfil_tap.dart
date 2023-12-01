@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:local_auth/local_auth.dart';
@@ -9,34 +11,44 @@ import 'package:unibus/models/Usuario.dart';
 import 'package:unibus/screens/login.dart';
 import 'package:unibus/services/user_services.dart';
 import 'package:unibus/widgets/custom_app_bar.dart';
+import 'package:unibus/widgets/profile_image_picker.dart';
 
-class Perfil extends StatelessWidget {
+class Perfil extends StatefulWidget {
   const Perfil({Key? key});
 
   @override
-  Widget build(BuildContext context) {
-    final LocalAuthentication _localAuthentication = LocalAuthentication();
+  _PerfilState createState() => _PerfilState();
+}
 
-    // Função para deletar o usuário após autenticação biométrica
-    Future<void> deletarUsuarioAposAutenticacao(Usuario user) async {
-      bool autenticado = false;
+class _PerfilState extends State<Perfil> {
+  final LocalAuthentication _localAuthentication = LocalAuthentication();
+  File? _selectedImage;
 
-      try {
-        autenticado = await _localAuthentication.authenticate(
-          localizedReason: 'Toque no sensor para autenticar',
-        );
-      } catch (e) {
-        print('Erro durante a autenticação biométrica: $e');
-      }
+  // Adicione o código do ProfileImagePicker aqui, se necessário
 
-      if (autenticado) {
-        UserServices userServices = UserServices();
-        userServices.deleteUser(user.nome);
-        await Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Login()));
-      }
+  // Função para deletar o usuário após autenticação biométrica
+  Future<void> deletarUsuarioAposAutenticacao(Usuario user) async {
+    bool autenticado = false;
+
+    try {
+      autenticado = await _localAuthentication.authenticate(
+        localizedReason: 'Toque no sensor para autenticar',
+      );
+    } catch (e) {
+      print('Erro durante a autenticação biométrica: $e');
     }
 
+    if (autenticado) {
+      UserServices userServices = UserServices();
+      userServices.deleteUser(user.nome);
+      setState(() {}); // Se precisar atualizar a interface após a exclusão
+      await Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Login()));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(
         title: "Perfil",
@@ -46,6 +58,13 @@ class Perfil extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            ProfileImagePicker(
+              onImageSelected: (image) {
+                setState(() {
+                  _selectedImage = image;
+                });
+              },
+            ),
             // Botão para deletar o usuário
             Consumer<UserProvider>(builder: (context, userProvider, child) {
               if (userProvider.user is Aluno) {
