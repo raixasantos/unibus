@@ -6,7 +6,6 @@ class UserProvider with ChangeNotifier {
 
   Usuario get user => _user;
 
-
   set user(Usuario value) {
     _user = value;
     notifyListeners();

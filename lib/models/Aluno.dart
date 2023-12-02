@@ -11,6 +11,6 @@ class Aluno extends Usuario {
   }
 
   Aluno(
-      String nome, String password, this.instituicao, this.turno, this.matricula)
-      : super(nome, password);
+      String nome, String password, this.instituicao, this.turno, this.matricula, {imageUrl})
+      : super(nome, password, imageUrl: imageUrl);
 }

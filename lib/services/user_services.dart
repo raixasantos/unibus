@@ -25,7 +25,8 @@ class UserServices {
         "nome": user.nome,
         "password": user.password,
         "faculdade": user.instituicao,
-        "turno": user.turno
+        "turno": user.turno,
+        "imageUrl": user.imageUrl?.path,
       });
     } else {
       Motorista motorista = user as Motorista;
@@ -36,6 +37,7 @@ class UserServices {
       queryResult.docs[0].reference.update({
         "nome": user.nome,
         "password": user.password,
+        "imageUrl": user.imageUrl?.path,
       });
     }
   }
@@ -50,18 +52,18 @@ class UserServices {
         "faculdade": user.instituicao,
         "password": user.password,
         "turno": user.turno,
-        "numeroCarteira": 0
+        "numeroCarteira": 0,
+        "imageUrl": user.imageUrl?.path,
       };
     } else if (user is Motorista) {
       userMapping = {
         "nome": user.nome,
         "password": user.password,
-        "numeroCarteira": user.numeroCarteira
+        "numeroCarteira": user.numeroCarteira,
+        "imageUrl": user.imageUrl?.path,
       };
     }
-    final users = await FirebaseFirestore.instance
-        .collection('users')
-        .doc();
+    final users = await FirebaseFirestore.instance.collection('users').doc();
     users.set(userMapping);
   }
 }

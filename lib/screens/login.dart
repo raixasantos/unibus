@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -32,15 +34,17 @@ class _LoginState extends State<Login> {
     Usuario user;
     /* VERIFICANDO SE FOI ENCONTRADO UM USUÁRIO */
     Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+    print(query.docs[0]["imageUrl"]);
     if (query.docs.length > 0) {
       if (query.docs[0]["numeroCarteira"] > 0 == false) {
-        print("teste");
         user = Aluno(
             query.docs[0]["nome"],
             query.docs[0]["password"],
             query.docs[0]["faculdade"],
             query.docs[0]["turno"],
-            query.docs[0]["matricula"]);
+            query.docs[0]["matricula"],
+            imageUrl: File(query.docs[0]["imageUrl"]));
+            
       } else {
         user = Motorista(query.docs[0]["nome"], query.docs[0]["password"],
             query.docs[0]["numeroCarteira"]);
@@ -49,7 +53,6 @@ class _LoginState extends State<Login> {
       UserProvider userProvider =
           Provider.of<UserProvider>(context, listen: false);
       userProvider.user = user;
-      print(user);
       /* ENVIANDO PARA TELA HOME */
       Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
     } else {
@@ -60,11 +63,7 @@ class _LoginState extends State<Login> {
   }
 
   void _login() async {
-    // Implemente a lógica de autenticação aqui
-    // Por enquanto, vamos apenas imprimir uma mensagem
-    print("Realizando login...");
     getUserData();
-    // Substitua o código acima pela lógica real de autenticação
   }
 
   @override
