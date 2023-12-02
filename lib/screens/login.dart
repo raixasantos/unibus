@@ -47,7 +47,7 @@ class _LoginState extends State<Login> {
             
       } else {
         user = Motorista(query.docs[0]["nome"], query.docs[0]["password"],
-            query.docs[0]["numeroCarteira"]);
+            query.docs[0]["numeroCarteira"], imageUrl: File(query.docs[0]["imageUrl"]));
       }
       /* SALVANDO O USUÁRIO NO PROVIDER */
       UserProvider userProvider =
