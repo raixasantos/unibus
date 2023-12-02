@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:unibus/components/UserProvider.dart';
+import 'package:unibus/models/Usuario.dart';
 
 class ProfileImagePicker extends StatefulWidget {
   final Function(File) onImageSelected;
@@ -14,18 +17,19 @@ class ProfileImagePicker extends StatefulWidget {
 }
 
 class _ProfileImagePickerState extends State<ProfileImagePicker> {
-  File? _image;
   final ImagePicker _picker = ImagePicker();
 
   Future<void> _getImage(ImageSource source) async {
+    UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
     final pickedFile = await _picker.pickImage(source: source);
 
     if (pickedFile != null) {
       setState(() {
-        _image = File(pickedFile.path);
+        userProvider.user.imageUrl = File(pickedFile!.path);
       });
 
-      widget.onImageSelected(_image!);
+      widget.onImageSelected(userProvider.user.imageUrl!);
     }
   }
 
@@ -33,11 +37,18 @@ class _ProfileImagePickerState extends State<ProfileImagePicker> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        if (_image != null)
-          CircleAvatar(
-            radius: 50, // ajuste conforme necessário
-            backgroundImage: FileImage(_image!),
-          ),
+        Consumer<UserProvider>(
+          builder: (context, userProvider, child) {
+            Usuario user = userProvider.user;
+            if (user.imageUrl != null){
+              return CircleAvatar(
+              radius: 50,
+              backgroundImage: FileImage(user.imageUrl!),
+              );
+            }
+            return Container();
+          },
+        ),
         ElevatedButton(
           onPressed: () => _getImage(ImageSource.gallery),
           child: Text('Selecionar da Galeria'),
