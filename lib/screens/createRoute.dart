@@ -40,13 +40,6 @@ class _CreateRouteState extends State<CreateRoute> {
               decoration: InputDecoration(labelText: "Descrição da Rota"),
             ),
             const SizedBox(height: 20.0),
-            LoginCardButton(
-                Text(
-                    "Adicionar Parada"), // Use um widget de texto no lugar de uma função
-                "Adicionar Parada", onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CreateStop()));
-            }),
             ElevatedButton(
               onPressed: () async {
                 // Ao pressionar o botão de adicionar

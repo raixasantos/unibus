@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:unibus/components/login/LoginCardButton.dart';
 import 'package:unibus/constants/colors.dart';
 import 'package:unibus/models/route_bus.dart';
 import 'package:provider/provider.dart';
 import 'package:unibus/components/RouteProvider.dart';
+import 'package:unibus/screens/createStop.dart';
+import 'package:unibus/screens/taps/parada_tap.dart';
 
 class RouteDetailsPage extends StatefulWidget {
   final RouteBus route;
@@ -152,6 +155,19 @@ class _RouteDetailsPageState extends State<RouteDetailsPage> {
                                 MaterialStateProperty.all<Color>(Colors.red))),
                   ],
                 ),
+              LoginCardButton(
+                  Text(
+                      "Adicionar Parada"), // Use um widget de texto no lugar de uma função
+                  "Adicionar Parada", onPressed: () {
+                print("Entrando em: ${widget.route.name}");
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CreateStop(
+                              codeBus: widget.route.codeBus,
+                            )));
+              }),
+              //StopsList(codeBus: widget.route.codeBus),
             ],
           ),
         ),

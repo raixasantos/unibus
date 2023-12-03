@@ -8,7 +8,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:unibus/services/parada_services.dart';
 
 class CreateStop extends StatefulWidget {
-  const CreateStop({Key? key}) : super(key: key);
+  final int codeBus;
+  const CreateStop({Key? key, required this.codeBus}) : super(key: key);
 
   @override
   _CreateStopState createState() => _CreateStopState();
@@ -49,21 +50,22 @@ class _CreateStopState extends State<CreateStop> {
     print("Começando as busca");
     final paradaProvider = Provider.of<ParadaProvider>(context, listen: false);
     final endereco =
-        '${paradaProvider.rua} ${paradaProvider.numero}, ${paradaProvider.bairro}';
+        '${paradaProvider.rua} ${paradaProvider.numero}, ${paradaProvider.cidade}';
 
     final coordenadas = await _paradaServices.getLatLong(
       paradaProvider.rua,
-      paradaProvider.bairro,
+      paradaProvider.cidade,
       paradaProvider.numero,
     );
 
     if (coordenadas.isNotEmpty) {
-      final latitude = coordenadas[0];
-      final longitude = coordenadas[1];
-      print('Latitude: $latitude, Longitude: $longitude');
+      paradaProvider.lat = coordenadas[0];
+      paradaProvider.long = coordenadas[1];
+      print(
+          'Latitude: ${paradaProvider.lat}, Longitude: ${paradaProvider.long}');
 
       // Atualiza o mapa com as novas coordenadas
-      _openMap(latitude, longitude);
+      _openMap(paradaProvider.lat, paradaProvider.long);
     } else {
       print('Erro ao obter coordenadas.2');
     }
@@ -97,11 +99,11 @@ class _CreateStopState extends State<CreateStop> {
                 },
               ),
               LoginInput(
-                "Bairro",
+                "cidade",
                 onChange: (value) {
                   final paradaProvider =
                       Provider.of<ParadaProvider>(context, listen: false);
-                  paradaProvider.bairro = value;
+                  paradaProvider.cidade = value;
                 },
               ),
               LoginInput(
@@ -152,6 +154,25 @@ class _CreateStopState extends State<CreateStop> {
                   ],
                 ),
               ),
+              LoginCardButton(
+                Text("Adicionar parada"),
+                "Adicionar parada",
+                onPressed: () async {
+                  final paradaProvider =
+                      Provider.of<ParadaProvider>(context, listen: false);
+                  final novaParada = Parada(
+                    codeBus: widget.codeBus,
+                    nome: paradaProvider.nome,
+                    rua: paradaProvider.rua,
+                    cidade: paradaProvider.cidade,
+                    numero: paradaProvider.numero,
+                    lat: paradaProvider.lat,
+                    long: paradaProvider.long,
+                  );
+
+                  await paradaProvider.addParada(novaParada);
+                },
+              )
             ],
           ),
         ),

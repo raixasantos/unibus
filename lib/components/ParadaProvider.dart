@@ -1,12 +1,18 @@
+import 'dart:collection';
 import 'package:flutter/material.dart';
+import 'package:unibus/models/Parada.dart';
+import 'package:unibus/services/parada_services.dart';
 
 class ParadaProvider with ChangeNotifier {
   String _nome = '';
+  int _codeBus = 0;
   String _rua = '';
-  String _bairro = '';
+  String _cidade = '';
   int _numero = 0;
   double _lat = 0;
   double _long = 0;
+
+  ParadaServices paradaServices = ParadaServices();
 
   String get nome => _nome;
 
@@ -16,11 +22,19 @@ class ParadaProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  String get bairro => _bairro;
+  int get codeBus => _codeBus;
 
-  set bairro(String value) {
-    _bairro = value;
-    print("Tem Bairro");
+  set codeBus(int value) {
+    _codeBus = value;
+    print("Tem Nome da rota");
+    notifyListeners();
+  }
+
+  String get cidade => _cidade;
+
+  set cidade(String value) {
+    _cidade = value;
+    print("Tem cidade");
     notifyListeners();
   }
 
@@ -53,6 +67,12 @@ class ParadaProvider with ChangeNotifier {
   set long(double value) {
     _long = value;
     print("Tem Rua");
+    notifyListeners();
+  }
+
+  Future<void> addParada(Parada parada) async {
+    await paradaServices.addParada(parada);
+    await paradaServices.getStopsByCodeBus(parada.codeBus);
     notifyListeners();
   }
 }

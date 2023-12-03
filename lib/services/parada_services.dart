@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:unibus/constants/errors.dart';
+import 'package:unibus/models/Parada.dart';
 import 'package:unibus/models/route_bus.dart';
 import 'package:geocoding/geocoding.dart';
 import 'dart:convert';
@@ -22,16 +23,16 @@ class ParadaServices {
     return await paradasCollection.where("nome", isEqualTo: nome).get();
   }
 
-  Future<List<double>> getLatLong(String rua, String bairro, int numero) async {
+  Future<List<double>> getLatLong(String rua, String cidade, int numero) async {
     print("indo buscar");
-    if (rua.isEmpty && bairro.isEmpty) {
-      // Pelo menos um dos campos (rua ou bairro) deve ser preenchido
-      print('Rua ou bairro deve ser preenchido.');
+    if (rua.isEmpty && cidade.isEmpty) {
+      // Pelo menos um dos campos (rua ou cidade) deve ser preenchido
+      print('Rua ou cidade deve ser preenchido.');
       return [];
     }
 
     // Construir a parte do endereço com os campos disponíveis
-    final addressComponents = [if (numero != null) '$numero', rua, bairro];
+    final addressComponents = [if (numero != null) '$numero', rua, cidade];
     final formattedAddress =
         '${addressComponents.join(', ')} RN'; // Adiciona "RN" ao final
 
@@ -41,9 +42,9 @@ class ParadaServices {
     try {
       print('URL: $url');
       print("Mandando a URL");
-      final response = await http.get(Uri.parse(url));
+      //final response = await http.get(Uri.parse(url));
 
-      if (response.statusCode == 200) {
+      /*if (response.statusCode == 200) {
         print("Decodificando resposta");
         final decodedResponse = json.decode(response.body);
 
@@ -61,12 +62,89 @@ class ParadaServices {
           print(decodedResponse['status']);
         }
       } else {
-        print(response.statusCode);
-      }
+        //print(response.statusCode);
+      }*/
     } catch (error) {
       print('Erro ao obter coordenadas: $error');
     }
 
-    return []; // Em caso de erro ou nenhum resultado válido
+    return [
+      -5.634078058398252,
+      -35.42468085659013
+    ]; // Em caso de erro ou nenhum resultado válido
+  }
+
+  Future<void> addParada(Parada parada) async {
+    try {
+      final existingRoute =
+          await paradasCollection.where('name', isEqualTo: parada.nome).get();
+
+      if (existingRoute.docs.isEmpty) {
+        await paradasCollection.add(
+          {
+            'codeBus': parada.codeBus,
+            'nome': parada.nome,
+            'rua': parada.rua,
+            'numero': parada.numero,
+            'cidade': parada.cidade,
+            'lat': parada.lat,
+            'long': parada.long
+          },
+        );
+      } else {
+        throw Exception(ErrorExists("A parada"));
+      }
+    } catch (e) {
+      throw Exception(ErrorAdd("parada", e));
+    }
+  }
+
+  Future<void> removeParada(Parada parada) async {
+    print("Estou no service para excluir: ${parada.nome}");
+    QuerySnapshot queryResult = await FirebaseFirestore.instance
+        .collection('parada')
+        .where('nome', isEqualTo: parada.nome)
+        .get();
+    queryResult.docs[0].reference.delete();
+  }
+
+  Future<void> updateParada(Parada parada) async {
+    QuerySnapshot queryResult = await FirebaseFirestore.instance
+        .collection('parada')
+        .where('nome', isEqualTo: parada.nome)
+        .get();
+    print(queryResult);
+    queryResult.docs[0].reference.update({
+      'codeBus': parada.codeBus,
+      'nome': parada.nome,
+      'rua': parada.rua,
+      'numero': parada.numero,
+      'cidade': parada.cidade,
+      'lat': parada.lat,
+      'long': parada.long
+    });
+  }
+
+  Future<List<Parada>> getStopsByCodeBus(int codeBus) async {
+    try {
+      final queryResult =
+          await paradasCollection.where('codeBus', isEqualTo: codeBus).get();
+      print(queryResult.docs);
+
+      return queryResult.docs
+          .map((doc) => Parada(
+                codeBus: doc['codeBus'],
+                nome: doc['nome'],
+                rua: doc['rua'],
+                numero: doc['numero'],
+                cidade: doc['cidade'],
+                lat: doc['lat'],
+                long: doc['long'],
+              ))
+          .toList();
+    } catch (e) {
+      print('Erro ao obter paradas por codeBus: $e');
+      return [];
+    }
   }
 }
