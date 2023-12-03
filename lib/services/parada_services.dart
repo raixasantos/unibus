@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 
 class ParadaServices {
   final GeocodingPlatform geocodingPlatform = GeocodingPlatform.instance;
-  final apiKey = "AIzaSyCpNAuuIY9wy1ezu5zNnUOhTWa37yLNzPI";
+  final apiKey = "hTWa37yLNzPI";
 
   final CollectionReference paradasCollection =
       FirebaseFirestore.instance.collection("parada");
