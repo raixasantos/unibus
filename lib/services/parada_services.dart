@@ -71,6 +71,31 @@ class ParadaServices {
     return []; // Em caso de erro ou nenhum resultado válido
   }
 
+  Future<Map<String, String>> getAddressFromCoordinates(
+      double latitude, double longitude) async {
+    try {
+      final List<Placemark> placemarks =
+          await placemarkFromCoordinates(latitude, longitude);
+
+      if (placemarks.isNotEmpty) {
+        final Placemark placemark = placemarks.first;
+        final String address =
+            '${placemark.street ?? ''}, ${placemark.locality ?? ''}, ${placemark.name ?? ''}';
+        return {
+          'rua': placemark.street ?? '',
+          'cidade': placemark.locality ?? '',
+          'numero': placemark.name ?? '',
+        };
+      } else {
+        print('Nenhum endereço encontrado para as coordenadas fornecidas.');
+        return {};
+      }
+    } catch (error) {
+      print('Erro ao obter endereço: $error');
+      return {};
+    }
+  }
+
   Future<void> addParada(Parada parada) async {
     try {
       final existingRoute =

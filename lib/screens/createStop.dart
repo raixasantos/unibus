@@ -54,6 +54,30 @@ class _CreateStopState extends State<CreateStop> {
     });
   }
 
+  Future<void> _searchAddress(LatLng? position) async {
+    if (position != null) {
+      final paradaProvider =
+          Provider.of<ParadaProvider>(context, listen: false);
+
+      final addressInfo = await _paradaServices.getAddressFromCoordinates(
+          position.latitude, position.longitude);
+
+      if (addressInfo.isNotEmpty) {
+        // Atualiza os campos diretamente no estado local
+        setState(() {
+          paradaProvider.rua = addressInfo['rua'] ?? '';
+          paradaProvider.cidade = addressInfo['cidade'] ?? '';
+          paradaProvider.numero =
+              int.tryParse(addressInfo['numero'] ?? '') ?? 0;
+        });
+      } else {
+        print('Erro ao obter informações do endereço.');
+      }
+    } else {
+      print('Posição nula.');
+    }
+  }
+
   Future<void> _searchStop() async {
     final paradaProvider = Provider.of<ParadaProvider>(context, listen: false);
     final coordenadas = await _paradaServices.getLatLong(
@@ -121,8 +145,8 @@ class _CreateStopState extends State<CreateStop> {
               Consumer<ParadaProvider>(
                   builder: (context, paradaProvider, child) {
                 return LoginCardButton(
-                  Text("Buscar Parada"),
-                  "Buscar Parada",
+                  Text("Buscar no mapa"),
+                  "Buscar no mapa",
                   onPressed: _searchStop,
                 );
               }),
@@ -178,6 +202,10 @@ class _CreateStopState extends State<CreateStop> {
                   ],
                 ),
               ),
+              LoginCardButton(Text("Buscar Informações"), "Buscar Informações",
+                  onPressed: () async {
+                await _searchAddress(selectedPosition);
+              }),
               LoginCardButton(
                 Text("Adicionar parada"),
                 "Adicionar parada",
