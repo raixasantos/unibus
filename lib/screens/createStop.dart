@@ -21,6 +21,11 @@ class _CreateStopState extends State<CreateStop> {
   LatLng? selectedPosition; // Adiciona uma variável para a posição selecionada
   final ParadaServices _paradaServices = ParadaServices();
 
+  final TextEditingController nomeController = TextEditingController();
+  final TextEditingController ruaController = TextEditingController();
+  final TextEditingController cidadeController = TextEditingController();
+  final TextEditingController numeroController = TextEditingController();
+
   void _onMapCreated(GoogleMapController controller) {
     setState(() {
       mapController = controller;
@@ -69,6 +74,11 @@ class _CreateStopState extends State<CreateStop> {
           paradaProvider.cidade = addressInfo['cidade'] ?? '';
           paradaProvider.numero =
               int.tryParse(addressInfo['numero'] ?? '') ?? 0;
+
+          // Atualiza os controladores
+          ruaController.text = paradaProvider.rua;
+          cidadeController.text = paradaProvider.cidade;
+          numeroController.text = paradaProvider.numero.toString();
         });
       } else {
         print('Erro ao obter informações do endereço.');
@@ -94,6 +104,11 @@ class _CreateStopState extends State<CreateStop> {
 
       // Atualiza o mapa com as novas coordenadas
       _openMap(paradaProvider.lat, paradaProvider.long);
+
+      // Atualiza os controladores
+      ruaController.text = paradaProvider.rua;
+      cidadeController.text = paradaProvider.cidade;
+      numeroController.text = paradaProvider.numero.toString();
     } else {
       print('Erro ao obter coordenadas.');
     }
@@ -112,6 +127,7 @@ class _CreateStopState extends State<CreateStop> {
             children: [
               LoginInput(
                 "Nome",
+                controller: nomeController,
                 onChange: (value) {
                   final paradaProvider =
                       Provider.of<ParadaProvider>(context, listen: false);
@@ -120,6 +136,7 @@ class _CreateStopState extends State<CreateStop> {
               ),
               LoginInput(
                 "Rua",
+                controller: ruaController,
                 onChange: (value) {
                   final paradaProvider =
                       Provider.of<ParadaProvider>(context, listen: false);
@@ -128,6 +145,7 @@ class _CreateStopState extends State<CreateStop> {
               ),
               LoginInput(
                 "cidade",
+                controller: cidadeController,
                 onChange: (value) {
                   final paradaProvider =
                       Provider.of<ParadaProvider>(context, listen: false);
@@ -136,6 +154,7 @@ class _CreateStopState extends State<CreateStop> {
               ),
               LoginInput(
                 "Numero",
+                controller: numeroController,
                 onChange: (value) {
                   final paradaProvider =
                       Provider.of<ParadaProvider>(context, listen: false);
