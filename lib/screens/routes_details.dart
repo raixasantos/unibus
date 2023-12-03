@@ -31,6 +31,7 @@ class _RouteDetailsPageState extends State<RouteDetailsPage> {
   @override
   void initState() {
     super.initState();
+    Provider.of<ParadaProvider>(context, listen: false).clearList();
     nameController.text = widget.route.name;
     descriptionController.text = widget.route.description;
     Provider.of<ParadaProvider>(context, listen: false)

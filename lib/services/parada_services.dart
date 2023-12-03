@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 
 class ParadaServices {
   final GeocodingPlatform geocodingPlatform = GeocodingPlatform.instance;
-  final apiKey = "hTWa37yLNzPI";
+  final apiKey = "AIzaSyCpNAuuIY9wy1ezu5zNnUOhTWa37yLNzPI";
 
   final CollectionReference paradasCollection =
       FirebaseFirestore.instance.collection("parada");
@@ -42,9 +42,9 @@ class ParadaServices {
     try {
       print('URL: $url');
       print("Mandando a URL");
-      //final response = await http.get(Uri.parse(url));
+      final response = await http.get(Uri.parse(url));
 
-      /*if (response.statusCode == 200) {
+      if (response.statusCode == 200) {
         print("Decodificando resposta");
         final decodedResponse = json.decode(response.body);
 
@@ -63,15 +63,12 @@ class ParadaServices {
         }
       } else {
         //print(response.statusCode);
-      }*/
+      }
     } catch (error) {
       print('Erro ao obter coordenadas: $error');
     }
 
-    return [
-      -5.634078058398252,
-      -35.42468085659013
-    ]; // Em caso de erro ou nenhum resultado válido
+    return []; // Em caso de erro ou nenhum resultado válido
   }
 
   Future<void> addParada(Parada parada) async {

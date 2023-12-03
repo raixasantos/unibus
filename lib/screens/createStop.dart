@@ -18,8 +18,8 @@ class CreateStop extends StatefulWidget {
 class _CreateStopState extends State<CreateStop> {
   late GoogleMapController mapController;
   Set<Marker> markers = {};
-  final ParadaServices _paradaServices =
-      ParadaServices(); // Instância do serviço
+  LatLng? selectedPosition; // Adiciona uma variável para a posição selecionada
+  final ParadaServices _paradaServices = ParadaServices();
 
   void _onMapCreated(GoogleMapController controller) {
     setState(() {
@@ -28,6 +28,10 @@ class _CreateStopState extends State<CreateStop> {
   }
 
   void _openMap(double latitude, double longitude) {
+    if (selectedPosition != null) {
+      markers.removeWhere((marker) => marker.markerId.value == 'selected');
+    }
+
     markers.add(
       Marker(
         markerId: MarkerId("parada"),
@@ -44,14 +48,14 @@ class _CreateStopState extends State<CreateStop> {
         LatLng(latitude, longitude),
       ),
     );
+
+    setState(() {
+      selectedPosition = LatLng(latitude, longitude);
+    });
   }
 
   Future<void> _searchStop() async {
-    print("Começando as busca");
     final paradaProvider = Provider.of<ParadaProvider>(context, listen: false);
-    final endereco =
-        '${paradaProvider.rua} ${paradaProvider.numero}, ${paradaProvider.cidade}';
-
     final coordenadas = await _paradaServices.getLatLong(
       paradaProvider.rua,
       paradaProvider.cidade,
@@ -67,7 +71,7 @@ class _CreateStopState extends State<CreateStop> {
       // Atualiza o mapa com as novas coordenadas
       _openMap(paradaProvider.lat, paradaProvider.long);
     } else {
-      print('Erro ao obter coordenadas.2');
+      print('Erro ao obter coordenadas.');
     }
   }
 
@@ -131,7 +135,7 @@ class _CreateStopState extends State<CreateStop> {
                       subtitle: Text("Endereço Completo"),
                       onTap: () {
                         if (markers.isNotEmpty) {
-                          // Abra o mapa ao clicar na parada
+                          // Abre o mapa ao clicar na parada
                           final marker = markers.first;
                           _openMap(
                             marker.position.latitude,
@@ -149,6 +153,26 @@ class _CreateStopState extends State<CreateStop> {
                           target: LatLng(-5.8379, -35.2055),
                           zoom: 15.0,
                         ),
+                        onTap: (LatLng position) {
+                          // Adiciona um marcador clicável
+                          markers.removeWhere(
+                              (marker) => marker.markerId.value == 'selected');
+                          markers.add(
+                            Marker(
+                              markerId: MarkerId('selected'),
+                              position: position,
+                              draggable: true,
+                              onDragEnd: (newPosition) {
+                                setState(() {
+                                  selectedPosition = newPosition;
+                                });
+                              },
+                            ),
+                          );
+                          setState(() {
+                            selectedPosition = position;
+                          });
+                        },
                       ),
                     ),
                   ],
@@ -166,8 +190,8 @@ class _CreateStopState extends State<CreateStop> {
                     rua: paradaProvider.rua,
                     cidade: paradaProvider.cidade,
                     numero: paradaProvider.numero,
-                    lat: paradaProvider.lat,
-                    long: paradaProvider.long,
+                    lat: selectedPosition?.latitude ?? 0,
+                    long: selectedPosition?.longitude ?? 0,
                   );
 
                   await paradaProvider.addParada(novaParada);
