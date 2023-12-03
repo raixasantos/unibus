@@ -8,6 +8,7 @@ import 'package:unibus/firebase_options.dart';
 import 'package:unibus/screens/login.dart';
 import 'package:unibus/theme.dart';
 import 'package:provider/provider.dart';
+import 'package:unibus/utils/observer.dart';
 
 import 'components/CadastroProvider.dart';
 import 'components/ParadaProvider.dart';
@@ -41,6 +42,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorObservers: [RouteDetailsObserver()],
       title: 'Flutter Demo',
       theme: lightTheme,
       home: const Login(),

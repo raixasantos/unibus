@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:unibus/components/ParadaProvider.dart';
 import 'package:unibus/components/login/LoginCardButton.dart';
 import 'package:unibus/constants/colors.dart';
+import 'package:unibus/models/Parada.dart';
 import 'package:unibus/models/route_bus.dart';
 import 'package:provider/provider.dart';
 import 'package:unibus/components/RouteProvider.dart';
 import 'package:unibus/screens/createStop.dart';
 import 'package:unibus/screens/taps/parada_tap.dart';
+import 'package:unibus/widgets/custom_parada_card.dart';
+
+import '../data/data.dart';
 
 class RouteDetailsPage extends StatefulWidget {
   final RouteBus route;
@@ -21,11 +26,15 @@ class _RouteDetailsPageState extends State<RouteDetailsPage> {
   TextEditingController descriptionController = TextEditingController();
   bool isEditing = false;
 
+  List<Parada> paradasStop = paradas;
+
   @override
   void initState() {
     super.initState();
     nameController.text = widget.route.name;
     descriptionController.text = widget.route.description;
+    Provider.of<ParadaProvider>(context, listen: false)
+        .initListStops(widget.route.codeBus);
   }
 
   @override
@@ -167,7 +176,23 @@ class _RouteDetailsPageState extends State<RouteDetailsPage> {
                               codeBus: widget.route.codeBus,
                             )));
               }),
-              //StopsList(codeBus: widget.route.codeBus),
+              Consumer<ParadaProvider>(builder: (context, paradas, child) {
+                if (paradas.list.isEmpty) {
+                  return ListTile(
+                    leading: Icon(Icons.route),
+                    title: Text("Sem Paradas ainda"),
+                  );
+                } else {
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: paradas.list.length,
+                      itemBuilder: (context, index) {
+                        final parada = paradas.list[index];
+                        return ParadaCard(parada);
+                      });
+                }
+              })
             ],
           ),
         ),

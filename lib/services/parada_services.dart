@@ -125,26 +125,7 @@ class ParadaServices {
     });
   }
 
-  Future<List<Parada>> getStopsByCodeBus(int codeBus) async {
-    try {
-      final queryResult =
-          await paradasCollection.where('codeBus', isEqualTo: codeBus).get();
-      print(queryResult.docs);
-
-      return queryResult.docs
-          .map((doc) => Parada(
-                codeBus: doc['codeBus'],
-                nome: doc['nome'],
-                rua: doc['rua'],
-                numero: doc['numero'],
-                cidade: doc['cidade'],
-                lat: doc['lat'],
-                long: doc['long'],
-              ))
-          .toList();
-    } catch (e) {
-      print('Erro ao obter paradas por codeBus: $e');
-      return [];
-    }
+  Future getStopsByCodeBus(int codeBus) async {
+    return await paradasCollection.where('codeBus', isEqualTo: codeBus).get();
   }
 }

@@ -1,3 +1,4 @@
+import 'package:unibus/models/Parada.dart';
 import 'package:unibus/models/advice_notification.dart';
 import 'package:unibus/models/route_bus.dart';
 
@@ -34,3 +35,5 @@ final List<RouteBus> routes = [
       description: "Destino: Instituições da Zona Norte",
       codeBus: 3)
 ];
+
+final List<Parada> paradas = [];
