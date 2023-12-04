@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:unibus/components/LoginProvider.dart';
+import 'package:unibus/components/NotificationProvider.dart';
 import 'package:unibus/components/RouteProvider.dart';
 import 'package:unibus/components/UserProvider.dart';
 import 'package:unibus/firebase_options.dart';
@@ -21,7 +22,8 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (context) => CadastroProvider()),
       ChangeNotifierProvider(create: (context) => LoginProvider()),
       ChangeNotifierProvider(create: (context) => UserProvider()),
-      ChangeNotifierProvider(create: (context) => RouteProvider())
+      ChangeNotifierProvider(create: (context) => RouteProvider()),
+      ChangeNotifierProvider(create: (context) => NotificationProvider())
     ],
     child: MyApp(),
   ));
