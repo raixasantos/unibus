@@ -53,10 +53,11 @@ class _MapState extends State<Map> {
   }
 
   void _loadParadas(int codeBus) async {
+    _paradaProvider.clearList(); // Limpe a lista de paradas atual
     await _paradaProvider.initListStops(codeBus);
 
-    setState(() async {
-      _markers.clear(); // Limpe os marcadores atuais
+    setState(() {
+      _clearMarkers(); // Limpe os marcadores atuais
 
       if (_paradaProvider.list.isNotEmpty) {
         // Adicione marcadores apenas se a lista de paradas não estiver vazia
@@ -83,6 +84,10 @@ class _MapState extends State<Map> {
         ),
       );
     });
+  }
+
+  void _clearMarkers() {
+    _markers.clear();
   }
 
   @override
