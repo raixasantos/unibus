@@ -46,6 +46,7 @@ dependencies:
   geolocator: ^10.1.0
   local_auth: ^2.1.7
   image_picker: ^1.0.4
+  firebase_messaging: ^14.7.6
 
 dev_dependencies:
   flutter_test:
