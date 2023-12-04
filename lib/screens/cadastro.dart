@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unibus/components/UserProvider.dart';
@@ -30,14 +32,15 @@ class _CadastroState extends State<Cadastro> {
     Usuario novoUsuario;
     if (cadastroProvider.numeroCarteira > 0) {
       novoUsuario = Motorista(cadastroProvider.name, cadastroProvider.senha,
-          cadastroProvider.numeroCarteira);
+          cadastroProvider.numeroCarteira, imageUrl: File(""));
     } else {
       novoUsuario = Aluno(
           cadastroProvider.name,
           cadastroProvider.senha,
           cadastroProvider.faculdade,
           cadastroProvider.turno,
-          cadastroProvider.matricula);
+          cadastroProvider.matricula,
+          imageUrl: File(""));
     }
     try {
       await userServices.CreateUser(novoUsuario);

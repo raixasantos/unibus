@@ -32,9 +32,8 @@ class _LoginState extends State<Login> {
     QuerySnapshot query =
         await loginServices.getUser(loginProvider.name, loginProvider.senha);
     Usuario user;
-    /* VERIFICANDO SE FOI ENCONTRADO UM USUÁRIO */
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
-    print(query.docs[0]["imageUrl"]);
+    print("TESTEEEEEEEEEEEEE");
+    print(query.docs.length);
     if (query.docs.length > 0) {
       if (query.docs[0]["numeroCarteira"] > 0 == false) {
         user = Aluno(
@@ -44,15 +43,16 @@ class _LoginState extends State<Login> {
             query.docs[0]["turno"],
             query.docs[0]["matricula"],
             imageUrl: File(query.docs[0]["imageUrl"]));
-            
       } else {
         user = Motorista(query.docs[0]["nome"], query.docs[0]["password"],
-            query.docs[0]["numeroCarteira"], imageUrl: File(query.docs[0]["imageUrl"]));
+            query.docs[0]["numeroCarteira"],
+            imageUrl: File(query.docs[0]["imageUrl"]));
       }
       /* SALVANDO O USUÁRIO NO PROVIDER */
       UserProvider userProvider =
           Provider.of<UserProvider>(context, listen: false);
       userProvider.user = user;
+      print("Entrou na função!!!!!!!!!!!!!!!!!!!!!!!");
       /* ENVIANDO PARA TELA HOME */
       Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
     } else {
@@ -103,7 +103,7 @@ class _LoginState extends State<Login> {
                           builder: (context, loginProvider, child) {
                         return LoginCardButton(
                           Text(
-                              "Login"), // Use um widget de texto no lugar de uma função
+                              "Login"),
                           "Login",
                           onPressed: loginProvider.isLogarEnabled
                               ? _login
