@@ -12,7 +12,6 @@ import 'package:provider/provider.dart';
 import 'package:unibus/utils/observer.dart';
 
 import 'components/CadastroProvider.dart';
-import 'components/ParadaProvider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
