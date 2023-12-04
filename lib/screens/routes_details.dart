@@ -185,13 +185,14 @@ class _RouteDetailsPageState extends State<RouteDetailsPage> {
                   );
                 } else {
                   return ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: paradas.list.length,
-                      itemBuilder: (context, index) {
-                        final parada = paradas.list[index];
-                        return ParadaCard(parada);
-                      });
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: paradas.list.length,
+                    itemBuilder: (context, index) {
+                      final parada = paradas.list[index];
+                      return ParadaCard(parada);
+                    },
+                  );
                 }
               })
             ],
