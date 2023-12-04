@@ -3,10 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
+import 'package:unibus/components/RouteProvider.dart';
+import 'package:unibus/components/ParadaProvider.dart';
 
 class Map extends StatefulWidget {
-  const Map({super.key});
+  const Map({Key? key});
 
+  @override
   State<Map> createState() => _MapState();
 }
 
@@ -15,6 +19,8 @@ class _MapState extends State<Map> {
   LatLng initialPosition = LatLng(0, 0); // Default coordinates
   bool loadedMap = false;
   Set<Marker> _markers = {};
+  int _selectedRoute = 0; // Valor padrão "Nenhuma rota"
+  late ParadaProvider _paradaProvider;
 
   Future<void> trackLocation() async {
     LocationPermission locationPermission =
@@ -40,9 +46,42 @@ class _MapState extends State<Map> {
     }
   }
 
+  void _loadParadas(int codeBus) async {
+    await _paradaProvider.initListStops(codeBus);
+
+    setState(() {
+      _markers.clear(); // Limpe os marcadores atuais
+
+      if (_paradaProvider.list.isNotEmpty) {
+        // Adicione marcadores apenas se a lista de paradas não estiver vazia
+        _markers.addAll(
+          _paradaProvider.list.map(
+            (parada) => Marker(
+              markerId: MarkerId(parada.nome),
+              position: LatLng(parada.lat, parada.long),
+              infoWindow: InfoWindow(
+                title: parada.nome,
+                snippet: "Código do ônibus: ${parada.codeBus}",
+              ),
+            ),
+          ),
+        );
+      }
+
+      // Adicione o marcador da localização do usuário
+      _markers.add(
+        Marker(
+          markerId: MarkerId("userLocation"),
+          position: initialPosition,
+        ),
+      );
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    _paradaProvider = Provider.of<ParadaProvider>(context, listen: false);
     trackLocation();
   }
 
@@ -53,12 +92,54 @@ class _MapState extends State<Map> {
 
   @override
   Widget build(BuildContext context) {
-    return GoogleMap(
-      key: UniqueKey(),
-      initialCameraPosition: CameraPosition(target: initialPosition, zoom: 15.0),
-      myLocationButtonEnabled: true,
-      markers: _markers,
-      onMapCreated: onMapCompleted,
+    final routeProvider = Provider.of<RouteProvider>(context);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Mapa'),
+      ),
+      body: Column(
+        children: [
+          // Dropdown para selecionar a rota
+          DropdownButton<int>(
+            value: _selectedRoute,
+            items: [
+              // Adicionando a opção "Nenhuma rota"
+              DropdownMenuItem<int>(
+                value: 0,
+                child: Text('Nenhuma rota'),
+              ),
+              // Adicionando as rotas dinamicamente a partir do RouteProvider
+              ...routeProvider.list.map((route) {
+                return DropdownMenuItem<int>(
+                  value: route.codeBus,
+                  child: Text(route.name),
+                );
+              }),
+            ],
+            onChanged: (value) {
+              setState(() {
+                _selectedRoute = value!;
+                if (_selectedRoute != 0) {
+                  // Quando o usuário seleciona uma rota, carregamos as paradas correspondentes
+                  _loadParadas(_selectedRoute);
+                }
+              });
+            },
+          ),
+          // Mapa
+          Expanded(
+            child: GoogleMap(
+              key: UniqueKey(),
+              initialCameraPosition:
+                  CameraPosition(target: initialPosition, zoom: 15.0),
+              myLocationButtonEnabled: true,
+              markers: _markers,
+              onMapCreated: onMapCompleted,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
