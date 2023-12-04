@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:unibus/components/LoginProvider.dart';
-import 'package:unibus/components/LoginProvider.dart';
 import 'package:unibus/components/UserProvider.dart';
 import 'package:unibus/components/login/LoginCardButton.dart';
 import 'package:unibus/components/login/LoginInput.dart';
@@ -14,6 +13,7 @@ import 'package:unibus/models/Motorista.dart';
 import 'package:unibus/models/Usuario.dart';
 import 'package:unibus/screens/cadastro.dart';
 import 'package:unibus/services/login_services.dart';
+import 'package:unibus/services/pushnotification_services.dart';
 import 'package:unibus/widgets/custom_app_bar.dart';
 import 'home.dart';
 
@@ -25,6 +25,18 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  @override
+  void initState() {
+    super.initState();
+    _initNotifications();
+  }
+
+  PushNotificationServices notificationServices = PushNotificationServices();
+  Future<void> _initNotifications() async {
+    await notificationServices.initialize(context);
+    // String? token = await notificationServices.getFirebaseToken();
+  }
+
   getUserData() async {
     LoginServices loginServices = LoginServices();
     LoginProvider loginProvider =
@@ -44,10 +56,10 @@ class _LoginState extends State<Login> {
             query.docs[0]["turno"],
             query.docs[0]["matricula"],
             imageUrl: File(query.docs[0]["imageUrl"]));
-            
       } else {
         user = Motorista(query.docs[0]["nome"], query.docs[0]["password"],
-            query.docs[0]["numeroCarteira"], imageUrl: File(query.docs[0]["imageUrl"]));
+            query.docs[0]["numeroCarteira"],
+            imageUrl: File(query.docs[0]["imageUrl"]));
       }
       /* SALVANDO O USUÁRIO NO PROVIDER */
       UserProvider userProvider =
