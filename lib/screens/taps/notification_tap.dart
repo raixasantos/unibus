@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:unibus/data/data.dart';
+import 'package:provider/provider.dart';
+import 'package:unibus/components/NotificationProvider.dart';
 import 'package:unibus/widgets/custom_advice_notification.dart';
 import 'package:unibus/widgets/custom_app_bar.dart';
 
@@ -26,43 +27,56 @@ class NotificationTap extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.only(left: 20, right: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 15),
-                child: Text("Hoje"),
-              ),
-              ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: advices.length,
-                  itemBuilder: (context, index) {
-                    final advice = advices[index];
-                    return isToday(advice.date)
-                        ? CustomAdviceNotification(advice)
-                        : null;
-                  }),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 15),
-                child: Text(
-                  "Este mês",
-                ),
-              ),
-              ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: advices.length,
-                  itemBuilder: (context, index) {
-                    final advice = advices[index];
-                    return isThisMonth(advice.date)
-                        ? CustomAdviceNotification(advice)
-                        : null;
-                  }),
-            ],
-          ),
-        ),
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            child: Consumer<NotificationProvider>(
+                builder: (context, notifications, child) {
+              final notificationslist = notifications.list;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 15),
+                    child: Text("Hoje"),
+                  ),
+                  notificationslist.isEmpty
+                      ? const ListTile(
+                          leading: Icon(Icons.route),
+                          title: Text('Ainda não há notificações de hoje'),
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: notificationslist.length,
+                          itemBuilder: (context, index) {
+                            final notification = notificationslist[index];
+                            return isToday(notification.date)
+                                ? CustomAdviceNotification(notification)
+                                : null;
+                          }),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 15),
+                    child: Text(
+                      "Este mês",
+                    ),
+                  ),
+                  notificationslist.isEmpty
+                      ? const ListTile(
+                          leading: Icon(Icons.route),
+                          title: Text('Ainda não há notificações esse mês'),
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: notificationslist.length,
+                          itemBuilder: (context, index) {
+                            final notification = notificationslist[index];
+                            return isThisMonth(notification.date)
+                                ? CustomAdviceNotification(notification)
+                                : null;
+                          }),
+                ],
+              );
+            })),
       ),
     );
   }

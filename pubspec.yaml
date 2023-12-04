@@ -47,6 +47,7 @@ dependencies:
   local_auth: ^2.1.7
   image_picker: ^1.0.4
   geocoding: ^2.1.1
+  firebase_messaging: ^14.7.6
 
 dev_dependencies:
   flutter_test:

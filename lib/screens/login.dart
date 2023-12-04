@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:unibus/components/LoginProvider.dart';
-import 'package:unibus/components/LoginProvider.dart';
 import 'package:unibus/components/UserProvider.dart';
 import 'package:unibus/components/login/LoginCardButton.dart';
 import 'package:unibus/components/login/LoginInput.dart';
@@ -14,6 +13,7 @@ import 'package:unibus/models/Motorista.dart';
 import 'package:unibus/models/Usuario.dart';
 import 'package:unibus/screens/cadastro.dart';
 import 'package:unibus/services/login_services.dart';
+import 'package:unibus/services/pushnotification_services.dart';
 import 'package:unibus/widgets/custom_app_bar.dart';
 import 'home.dart';
 
@@ -25,6 +25,21 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  @override
+  void initState() {
+    super.initState();
+    _initNotifications();
+  }
+
+  PushNotificationServices notificationServices = PushNotificationServices();
+  Future<void> _initNotifications() async {
+    await notificationServices.initialize(context);
+    String? token = await notificationServices.getFirebaseToken();
+    debugPrint('=======================================');
+    debugPrint("Token: $token");
+    debugPrint('=======================================');
+  }
+
   getUserData() async {
     LoginServices loginServices = LoginServices();
     LoginProvider loginProvider =
@@ -32,6 +47,10 @@ class _LoginState extends State<Login> {
     QuerySnapshot query =
         await loginServices.getUser(loginProvider.name, loginProvider.senha);
     Usuario user;
+    /* VERIFICANDO SE FOI ENCONTRADO UM USUÁRIO */
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => Home(indexReceived: 0)));
+    print(query.docs[0]["imageUrl"]);
     print("TESTEEEEEEEEEEEEE");
     print(query.docs.length);
     if (query.docs.length > 0) {
@@ -54,7 +73,8 @@ class _LoginState extends State<Login> {
       userProvider.user = user;
       print("Entrou na função!!!!!!!!!!!!!!!!!!!!!!!");
       /* ENVIANDO PARA TELA HOME */
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => Home(indexReceived: 0)));
     } else {
       Fluttertoast.showToast(
           msg: "Não foram encontrados usuários com os dados especificados.",
@@ -102,8 +122,7 @@ class _LoginState extends State<Login> {
                       Consumer<LoginProvider>(
                           builder: (context, loginProvider, child) {
                         return LoginCardButton(
-                          Text(
-                              "Login"),
+                          Text("Login"),
                           "Login",
                           onPressed: loginProvider.isLogarEnabled
                               ? _login
