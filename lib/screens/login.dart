@@ -45,7 +45,8 @@ class _LoginState extends State<Login> {
         await loginServices.getUser(loginProvider.name, loginProvider.senha);
     Usuario user;
     /* VERIFICANDO SE FOI ENCONTRADO UM USUÁRIO */
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => Home(indexReceived: 0)));
     print(query.docs[0]["imageUrl"]);
     if (query.docs.length > 0) {
       if (query.docs[0]["numeroCarteira"] > 0 == false) {
@@ -66,7 +67,8 @@ class _LoginState extends State<Login> {
           Provider.of<UserProvider>(context, listen: false);
       userProvider.user = user;
       /* ENVIANDO PARA TELA HOME */
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => Home(indexReceived: 0)));
     } else {
       Fluttertoast.showToast(
           msg: "Não foram encontrados usuários com os dados especificados.",
