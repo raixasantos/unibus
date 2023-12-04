@@ -21,6 +21,7 @@ class _MapState extends State<Map> {
   Set<Marker> _markers = {};
   int _selectedRoute = 0; // Valor padrão "Nenhuma rota"
   late ParadaProvider _paradaProvider;
+  late BitmapDescriptor parada_icon;
 
   Future<void> trackLocation() async {
     LocationPermission locationPermission =
@@ -46,10 +47,15 @@ class _MapState extends State<Map> {
     }
   }
 
+  void load_paradaMarker() async {
+    parada_icon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(1, 1)), "assets/bus-stop.png");
+  }
+
   void _loadParadas(int codeBus) async {
     await _paradaProvider.initListStops(codeBus);
 
-    setState(() {
+    setState(() async {
       _markers.clear(); // Limpe os marcadores atuais
 
       if (_paradaProvider.list.isNotEmpty) {
@@ -59,6 +65,7 @@ class _MapState extends State<Map> {
             (parada) => Marker(
               markerId: MarkerId(parada.nome),
               position: LatLng(parada.lat, parada.long),
+              icon: parada_icon,
               infoWindow: InfoWindow(
                 title: parada.nome,
                 snippet: "Código do ônibus: ${parada.codeBus}",
@@ -80,6 +87,7 @@ class _MapState extends State<Map> {
 
   @override
   void initState() {
+    load_paradaMarker();
     super.initState();
     _paradaProvider = Provider.of<ParadaProvider>(context, listen: false);
     trackLocation();
