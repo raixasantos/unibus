@@ -26,6 +26,9 @@ class _CreateStopState extends State<CreateStop> {
   final TextEditingController cidadeController = TextEditingController();
   final TextEditingController numeroController = TextEditingController();
 
+  bool _showErrorMessage = false;
+  String _errorMessage = '';
+
   void _onMapCreated(GoogleMapController controller) {
     setState(() {
       mapController = controller;
@@ -81,10 +84,18 @@ class _CreateStopState extends State<CreateStop> {
           numeroController.text = paradaProvider.numero.toString();
         });
       } else {
-        print('Erro ao obter informações do endereço.');
+        // Exibe a mensagem de erro
+        setState(() {
+          _showErrorMessage = true;
+          _errorMessage = 'Erro ao obter informações do endereço.';
+        });
       }
     } else {
-      print('Posição nula.');
+      // Exibe a mensagem de erro
+      setState(() {
+        _showErrorMessage = true;
+        _errorMessage = 'Posição nula.';
+      });
     }
   }
 
@@ -109,8 +120,18 @@ class _CreateStopState extends State<CreateStop> {
       ruaController.text = paradaProvider.rua;
       cidadeController.text = paradaProvider.cidade;
       numeroController.text = paradaProvider.numero.toString();
+
+      // Limpa a mensagem de erro se estiver visível
+      setState(() {
+        _showErrorMessage = false;
+        _errorMessage = '';
+      });
     } else {
-      print('Erro ao obter coordenadas.');
+      // Exibe a mensagem de erro
+      setState(() {
+        _showErrorMessage = true;
+        _errorMessage = 'Erro ao obter coordenadas. Verifique os dados.';
+      });
     }
   }
 
@@ -120,134 +141,167 @@ class _CreateStopState extends State<CreateStop> {
       appBar: AppBar(
         title: Text("Criar Parada"),
       ),
-      body: ListView(padding: EdgeInsets.all(10), children: [
-        Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              LoginInput(
-                "Nome",
-                controller: nomeController,
-                onChange: (value) {
-                  final paradaProvider =
-                      Provider.of<ParadaProvider>(context, listen: false);
-                  paradaProvider.nome = value;
-                },
-              ),
-              LoginInput(
-                "Rua",
-                controller: ruaController,
-                onChange: (value) {
-                  final paradaProvider =
-                      Provider.of<ParadaProvider>(context, listen: false);
-                  paradaProvider.rua = value;
-                },
-              ),
-              LoginInput(
-                "cidade",
-                controller: cidadeController,
-                onChange: (value) {
-                  final paradaProvider =
-                      Provider.of<ParadaProvider>(context, listen: false);
-                  paradaProvider.cidade = value;
-                },
-              ),
-              LoginInput(
-                "Numero",
-                controller: numeroController,
-                onChange: (value) {
-                  final paradaProvider =
-                      Provider.of<ParadaProvider>(context, listen: false);
-                  paradaProvider.numero = int.parse(value);
-                },
-              ),
-              Consumer<ParadaProvider>(
-                  builder: (context, paradaProvider, child) {
-                return LoginCardButton(
-                  Text("Buscar no mapa"),
-                  "Buscar no mapa",
-                  onPressed: _searchStop,
-                );
-              }),
-              SizedBox(height: 20),
-              Card(
-                child: Column(
-                  children: [
-                    ListTile(
-                      title: Text("Nome da Parada"),
-                      subtitle: Text("Endereço Completo"),
-                      onTap: () {
-                        if (markers.isNotEmpty) {
-                          // Abre o mapa ao clicar na parada
-                          final marker = markers.first;
-                          _openMap(
-                            marker.position.latitude,
-                            marker.position.longitude,
-                          );
-                        }
-                      },
+      body: ListView(
+        padding: EdgeInsets.all(10),
+        children: [
+          Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                LoginInput(
+                  "Nome",
+                  controller: nomeController,
+                  onChange: (value) {
+                    final paradaProvider =
+                        Provider.of<ParadaProvider>(context, listen: false);
+                    paradaProvider.nome = value;
+                  },
+                ),
+                LoginInput(
+                  "Rua",
+                  controller: ruaController,
+                  onChange: (value) {
+                    final paradaProvider =
+                        Provider.of<ParadaProvider>(context, listen: false);
+                    paradaProvider.rua = value;
+                  },
+                ),
+                LoginInput(
+                  "cidade",
+                  controller: cidadeController,
+                  onChange: (value) {
+                    final paradaProvider =
+                        Provider.of<ParadaProvider>(context, listen: false);
+                    paradaProvider.cidade = value;
+                  },
+                ),
+                LoginInput(
+                  "Numero",
+                  controller: numeroController,
+                  onChange: (value) {
+                    final paradaProvider =
+                        Provider.of<ParadaProvider>(context, listen: false);
+                    paradaProvider.numero = int.parse(value);
+                  },
+                ),
+                Consumer<ParadaProvider>(
+                    builder: (context, paradaProvider, child) {
+                  return LoginCardButton(
+                    Text("Buscar no mapa"),
+                    "Buscar no mapa",
+                    onPressed: _searchStop,
+                  );
+                }),
+
+                // Exibe a mensagem de erro, se aplicável
+                if (_showErrorMessage)
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      _errorMessage,
+                      style: TextStyle(color: Colors.red),
                     ),
-                    Container(
-                      height: 200,
-                      child: GoogleMap(
-                        onMapCreated: _onMapCreated,
-                        markers: markers,
-                        initialCameraPosition: CameraPosition(
-                          target: LatLng(-5.8379, -35.2055),
-                          zoom: 15.0,
-                        ),
-                        onTap: (LatLng position) {
-                          // Adiciona um marcador clicável
-                          markers.removeWhere(
-                              (marker) => marker.markerId.value == 'selected');
-                          markers.add(
-                            Marker(
-                              markerId: MarkerId('selected'),
-                              position: position,
-                              draggable: true,
-                              onDragEnd: (newPosition) {
-                                setState(() {
-                                  selectedPosition = newPosition;
-                                });
-                              },
-                            ),
-                          );
-                          setState(() {
-                            selectedPosition = position;
-                          });
+                  ),
+
+                SizedBox(height: 20),
+                Card(
+                  child: Column(
+                    children: [
+                      ListTile(
+                        title: Text("Nome da Parada"),
+                        subtitle: Text("Endereço Completo"),
+                        onTap: () {
+                          if (markers.isNotEmpty) {
+                            // Abre o mapa ao clicar na parada
+                            final marker = markers.first;
+                            _openMap(
+                              marker.position.latitude,
+                              marker.position.longitude,
+                            );
+                          }
                         },
                       ),
-                    ),
-                  ],
+                      Container(
+                        height: 200,
+                        child: GoogleMap(
+                          onMapCreated: _onMapCreated,
+                          markers: markers,
+                          initialCameraPosition: CameraPosition(
+                            target: LatLng(-5.8379, -35.2055),
+                            zoom: 15.0,
+                          ),
+                          onTap: (LatLng position) {
+                            // Adiciona um marcador clicável
+                            markers.removeWhere((marker) =>
+                                marker.markerId.value == 'selected');
+                            markers.add(
+                              Marker(
+                                markerId: MarkerId('selected'),
+                                position: position,
+                                draggable: true,
+                                onDragEnd: (newPosition) {
+                                  setState(() {
+                                    selectedPosition = newPosition;
+                                  });
+                                },
+                              ),
+                            );
+                            setState(() {
+                              selectedPosition = position;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              LoginCardButton(Text("Buscar Informações"), "Buscar Informações",
-                  onPressed: () async {
-                await _searchAddress(selectedPosition);
-              }),
-              LoginCardButton(
-                Text("Adicionar parada"),
-                "Adicionar parada",
-                onPressed: () async {
-                  final paradaProvider =
-                      Provider.of<ParadaProvider>(context, listen: false);
-                  final novaParada = Parada(
-                    codeBus: widget.codeBus,
-                    nome: paradaProvider.nome,
-                    rua: paradaProvider.rua,
-                    cidade: paradaProvider.cidade,
-                    numero: paradaProvider.numero,
-                    lat: selectedPosition?.latitude ?? 0,
-                    long: selectedPosition?.longitude ?? 0,
-                  );
 
-                  await paradaProvider.addParada(novaParada);
-                },
-              )
-            ],
+                // Texto para buscar informações
+                LoginCardButton(
+                  Text("Buscar Informações"),
+                  "Buscar Informações",
+                  onPressed: () async {
+                    await _searchAddress(selectedPosition);
+                  },
+                ),
+
+                // Botão para adicionar parada
+                LoginCardButton(
+                  Text("Adicionar parada"),
+                  "Adicionar parada",
+                  onPressed: () async {
+                    final paradaProvider =
+                        Provider.of<ParadaProvider>(context, listen: false);
+                    final novaParada = Parada(
+                      codeBus: widget.codeBus,
+                      nome: paradaProvider.nome,
+                      rua: paradaProvider.rua,
+                      cidade: paradaProvider.cidade,
+                      numero: paradaProvider.numero,
+                      lat: selectedPosition?.latitude ?? 0,
+                      long: selectedPosition?.longitude ?? 0,
+                    );
+
+                    // Exibe a mensagem de erro se não foi possível adicionar a parada
+                    try {
+                      await paradaProvider.addParada(novaParada);
+                      // ...
+                    } catch (error) {
+                      // Notifica o erro de forma semelhante ao código de rota
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("Erro ao adicionar parada: $error"),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  },
+                )
+              ],
+            ),
           ),
-        ),
-      ]),
+        ],
+      ),
     );
   }
 }
