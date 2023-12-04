@@ -40,12 +40,13 @@ dependencies:
   firebase: ^9.0.3
   firebase_core: ^2.20.0
   cloud_firestore: ^4.12.1
-  fluttertoast: ^8.2.2
+  fluttertoast: ^8.2.4
   uuid: ^4.1.0
   google_maps_flutter: ^2.5.0
   geolocator: ^10.1.0
   local_auth: ^2.1.7
   image_picker: ^1.0.4
+  geocoding: ^2.1.1
   firebase_messaging: ^14.7.6
 
 dev_dependencies:

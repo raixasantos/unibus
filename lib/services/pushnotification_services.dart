@@ -42,9 +42,11 @@ class PushNotificationServices {
 
   Future<void> handleNotificationMessage(
       RemoteMessage message, BuildContext context) async {
+    debugPrint('=======================================');
     RemoteNotification? notification = message.notification;
 
     if (notification != null) {
+      debugPrint("onMessage: ${notification.body!}");
       // Montar a notificação (data enviada, descrição e visto)
       AdviceNotification notificationReceived = AdviceNotification(
           date: DateTime.now(), description: notification.body!, seen: false);
@@ -52,5 +54,6 @@ class PushNotificationServices {
       Provider.of<NotificationProvider>(context, listen: false)
           .addNotification(notificationReceived);
     }
+    debugPrint('=======================================');
   }
 }

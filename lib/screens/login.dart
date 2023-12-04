@@ -34,7 +34,10 @@ class _LoginState extends State<Login> {
   PushNotificationServices notificationServices = PushNotificationServices();
   Future<void> _initNotifications() async {
     await notificationServices.initialize(context);
-    // String? token = await notificationServices.getFirebaseToken();
+    String? token = await notificationServices.getFirebaseToken();
+    debugPrint('=======================================');
+    debugPrint("Token: $token");
+    debugPrint('=======================================');
   }
 
   getUserData() async {
@@ -48,6 +51,8 @@ class _LoginState extends State<Login> {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => Home(indexReceived: 0)));
     print(query.docs[0]["imageUrl"]);
+    print("TESTEEEEEEEEEEEEE");
+    print(query.docs.length);
     if (query.docs.length > 0) {
       if (query.docs[0]["numeroCarteira"] > 0 == false) {
         user = Aluno(
@@ -66,6 +71,7 @@ class _LoginState extends State<Login> {
       UserProvider userProvider =
           Provider.of<UserProvider>(context, listen: false);
       userProvider.user = user;
+      print("Entrou na função!!!!!!!!!!!!!!!!!!!!!!!");
       /* ENVIANDO PARA TELA HOME */
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => Home(indexReceived: 0)));
@@ -116,8 +122,7 @@ class _LoginState extends State<Login> {
                       Consumer<LoginProvider>(
                           builder: (context, loginProvider, child) {
                         return LoginCardButton(
-                          Text(
-                              "Login"), // Use um widget de texto no lugar de uma função
+                          Text("Login"),
                           "Login",
                           onPressed: loginProvider.isLogarEnabled
                               ? _login
