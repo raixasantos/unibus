@@ -2,8 +2,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:unibus/components/NotificationProvider.dart';
+import 'package:unibus/main.dart';
 import 'package:unibus/models/advice_notification.dart';
-import 'package:unibus/screens/taps/notification_tap.dart';
+import 'package:unibus/screens/home.dart';
 
 class PushNotificationServices {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
@@ -18,29 +19,14 @@ class PushNotificationServices {
     );
     FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      debugPrint('=======================================');
-      debugPrint("onMessage: $message, adicione o local mulher");
-      debugPrint('=======================================');
+      handleNotificationMessage(message, context);
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      debugPrint("onMessageOpenedApp: $message");
-      RemoteNotification? notification = message.notification;
-
-      if (notification != null) {
-        // Montar a notificação (data enviada, descrição e visto-true)
-        AdviceNotification notificationReceived = AdviceNotification(
-            date: DateTime.now(), description: notification.body!, seen: false);
-        // Salvar no service de mensagem (método provider)
-        Provider.of<NotificationProvider>(context, listen: false)
-            .addNotification(notificationReceived);
-      }
-      // Enviar para tela auxiliar (telinha pra ver os detalhes e retornar a tela de listagem das notificações)
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => NotificationTap(),
-        ),
-      );
+      handleNotificationMessage(message, context);
+      // Enviar para tela auxiliar
+      navigatorKey.currentState?.push(MaterialPageRoute(
+        builder: (context) => const Home(indexReceived: 2),
+      ));
     });
   }
 
@@ -52,5 +38,19 @@ class PushNotificationServices {
     debugPrint('=======================================');
     debugPrint("onMessage: ${message.notification?.title}");
     debugPrint('=======================================');
+  }
+
+  Future<void> handleNotificationMessage(
+      RemoteMessage message, BuildContext context) async {
+    RemoteNotification? notification = message.notification;
+
+    if (notification != null) {
+      // Montar a notificação (data enviada, descrição e visto)
+      AdviceNotification notificationReceived = AdviceNotification(
+          date: DateTime.now(), description: notification.body!, seen: false);
+      // Salvar no service de mensagem
+      Provider.of<NotificationProvider>(context, listen: false)
+          .addNotification(notificationReceived);
+    }
   }
 }

@@ -36,6 +36,8 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
@@ -43,6 +45,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       theme: lightTheme,
       home: const Login(),
+      navigatorKey: navigatorKey,
     );
   }
 }
